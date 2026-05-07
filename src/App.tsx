@@ -60,6 +60,7 @@ interface FormData {
 
 function LandingPage() {
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', whatsapp: '' });
+  const [errors, setErrors] = useState<{email?: string, whatsapp?: string}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 24, seconds: 59 });
   const navigate = useNavigate();
@@ -97,8 +98,42 @@ function LandingPage() {
     return () => clearInterval(timer);
   }, []);
 
+  const maskPhone = (value: string) => {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+  };
+
+  const validateEmail = (email: string) => {
+    return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const digits = phone.replace(/\D/g, '');
+    return digits.length === 11 || digits.length === 10;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Clear previous errors
+    setErrors({});
+    
+    // Validate
+    const newErrors: {email?: string, whatsapp?: string} = {};
+    if (!validateEmail(formData.email)) {
+      newErrors.email = 'E-mail inválido. Por favor, insira um e-mail real.';
+    }
+    if (!validatePhone(formData.whatsapp)) {
+      newErrors.whatsapp = 'Número incompleto. Insira o DDD + 9 números.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -390,23 +425,30 @@ function LandingPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                 />
+                <div className="space-y-2">
+                  <input 
+                    required
+                    type="email" 
+                    placeholder="SEU MELHOR E-MAIL"
+                    className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] ${errors.email ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  />
+                  {errors.email && <p className="text-[10px] text-red-500 font-bold px-2">{errors.email}</p>}
+                </div>
+              </div>
+              <div className="space-y-2">
                 <input 
                   required
-                  type="email" 
-                  placeholder="SEU MELHOR E-MAIL"
-                  className="w-full bg-slate-50 border-2 border-slate-100 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px]"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  type="tel" 
+                  placeholder="WHATSAPP COM DDD (Ex: 11 98888-8888)"
+                  className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] ${errors.whatsapp ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
+                  value={formData.whatsapp}
+                  onChange={(e) => setFormData({...formData, whatsapp: maskPhone(e.target.value)})}
+                  maxLength={15}
                 />
+                {errors.whatsapp && <p className="text-[10px] text-red-500 font-bold px-2">{errors.whatsapp}</p>}
               </div>
-              <input 
-                required
-                type="tel" 
-                placeholder="WHATSAPP COM DDD (Ex: 00 00000-0000)"
-                className="w-full bg-slate-50 border-2 border-slate-100 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px]"
-                value={formData.whatsapp}
-                onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
-              />
               
               <button 
                 disabled={isSubmitting}
