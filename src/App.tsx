@@ -134,9 +134,9 @@ function LandingPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen lg:h-screen snap-start flex items-center overflow-hidden bg-white py-12 lg:py-0">
-        <div className="container mx-auto px-6 max-w-7xl w-full">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <section className="relative h-[100dvh] lg:h-screen snap-start flex flex-col items-center overflow-hidden bg-white">
+        <div className="container mx-auto px-6 max-w-7xl w-full h-full flex flex-col justify-center py-6 sm:py-12 lg:py-0">
+          <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-12 lg:gap-20">
             {/* Copy Side */}
             <div className="flex-1 text-center lg:text-left z-10 w-full">
               <motion.div 
@@ -144,24 +144,24 @@ function LandingPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-50 text-orange-700 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.15em] mb-4 sm:mb-8 border border-orange-100 shadow-sm">
-                  <ShieldCheck size={14} className="animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-[0.15em] mb-3 sm:mb-8 border border-orange-100 shadow-sm mx-auto lg:mx-0">
+                  <ShieldCheck size={12} className="animate-pulse" />
                   <span>Acesso Gratuito e Instantâneo</span>
                 </div>
                 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-4 sm:mb-8 text-slate-900">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-3 sm:mb-8 text-slate-900">
                   CRIE <span className="text-orange-600">FILHOS FORTES</span> EM UM MUNDO SEM VALORES.
                 </h1>
 
-                {/* Mobile Book Image - Optimized position for mobile fold */}
-                <div className="lg:hidden mb-6 transform scale-90 sm:scale-100">
-                  <div className="relative group max-w-[240px] mx-auto">
+                {/* Mobile Book Image - Optimized size to fit in first fold */}
+                <div className="lg:hidden mb-4 transform scale-90">
+                  <div className="relative group max-w-[180px] mx-auto">
                     <div className="absolute inset-0 bg-orange-600/10 rounded-lg blur-2xl"></div>
                     <div className="relative z-10 flex justify-center">
                       <img 
                         src="https://i.postimg.cc/zvkhpzsN/capa-Paternidade-Proposito-By-Wagner-Ferraz.png" 
                         alt="Capa do Livro Paternidade com Propósito" 
-                        className="rounded-r-lg shadow-xl h-auto w-auto max-h-[35vh] object-contain border-l-[6px] border-black"
+                        className="rounded-r-lg shadow-xl h-auto w-auto max-h-[25vh] object-contain border-l-[4px] border-black"
                         referrerPolicy="no-referrer"
                         loading="lazy"
                       />
@@ -169,21 +169,21 @@ function LandingPage() {
                   </div>
                 </div>
 
-                <p className="text-slate-500 text-sm sm:text-xl lg:text-2xl mb-6 sm:mb-12 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                <p className="text-slate-500 text-xs sm:text-xl lg:text-2xl mb-4 sm:mb-12 leading-tight sm:leading-relaxed max-w-xl mx-auto lg:mx-0">
                   Descubra o <span className="text-slate-900 font-bold">Manual Prático de Paternidade com Propósito</span> e assuma de vez a liderança do seu lar.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center mb-6 lg:mb-0">
+                <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center mb-4 lg:mb-0">
                   <a 
                     href="#form" 
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-orange-600 hover:bg-orange-700 text-white font-black py-4 sm:py-6 px-12 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-1 active:scale-95 group text-base sm:text-lg"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-orange-600 hover:bg-orange-700 text-white font-black py-3 sm:py-6 px-10 sm:px-12 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:shadow-orange-300 transform hover:-translate-y-1 active:scale-95 group text-sm sm:text-lg"
                   >
                     <span>BAIXAR O MANUAL GRÁTIS</span>
-                    <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                   </a>
                 </div>
 
-                <div className="relative mb-6 sm:mb-10 pl-6 border-l-4 border-orange-500 py-2 hidden sm:block">
+                <div className="relative mb-4 sm:mb-10 pl-6 border-l-4 border-orange-500 py-2 hidden sm:block text-left">
                   <p className="text-lg sm:text-2xl text-slate-600 leading-tight font-serif italic">
                     "O que você não corrige hoje, o mundo corrigirá amanhã — e o mundo não terá misericórdia."
                   </p>
@@ -238,12 +238,11 @@ function LandingPage() {
             </motion.div>
           </div>
           
-          {/* Scroll Indicator */}
+          {/* Scroll Indicator - Positioned to be always visible in the first fold */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2 }}
-            className="absolute bottom-6 left-0 right-0 flex justify-center pointer-events-none z-20"
+            className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none z-20"
           >
             <motion.div 
               animate={{ y: [0, 8, 0] }} 

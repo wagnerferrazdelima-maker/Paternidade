@@ -140,11 +140,11 @@ export default function ThankYou() {
         <span>PASSO 2 DE 2: CONFIGURANDO SEU ACESSO</span>
       </div>
 
-      <div className="relative pt-4 sm:pt-12 pb-20 bg-white">
+      <div className="relative h-[100dvh] lg:h-auto pt-4 sm:pt-12 pb-20 bg-white">
         {/* Background Elements */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-orange-50/50 blur-3xl -z-0"></div>
 
-        <div className="container mx-auto px-4 sm:px-6 max-w-5xl relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 max-w-5xl h-full flex flex-col justify-center relative z-10">
           <div className="text-center mb-4 sm:mb-12">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -159,34 +159,28 @@ export default function ThankYou() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-2xl sm:text-4xl md:text-6xl font-black mb-2 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
+              className="text-xl sm:text-4xl md:text-6xl font-black mb-2 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
             >
               NÃO FECHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
             </motion.h1>
-            <p className="text-xs sm:text-xl text-slate-500 max-w-2xl mx-auto leading-tight sm:leading-relaxed font-medium px-2 sm:px-0">
+            <p className="text-[10px] sm:text-xl text-slate-500 max-w-2xl mx-auto leading-tight sm:leading-relaxed font-medium px-2 sm:px-0">
               ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 font-bold underline decoration-orange-500 decoration-1 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
             </p>
           </div>
 
-          {/* VSL Section - Portrait format */}
-          <div className="max-w-[240px] sm:max-w-md mx-auto mb-8 sm:mb-16 px-2">
-            <div className="relative aspect-[9/16] bg-black rounded-[2rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden border-[6px] sm:border-[12px] border-slate-900 group">
+          {/* VSL Section - Portrait format, size optimized for mobile first fold */}
+          <div className="max-w-[160px] sm:max-w-md mx-auto mb-4 sm:mb-16 px-2">
+            <div className="relative aspect-[9/16] bg-black rounded-[1.5rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden border-[4px] sm:border-[12px] border-slate-900 group">
               {/* Fake Video Player Placeholder */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-gradient-to-b from-slate-900 to-black">
-                <div className="w-24 h-24 bg-orange-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-orange-500 group-hover:scale-110 transition-transform cursor-pointer">
-                  <Play size={48} fill="currentColor" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 sm:p-8 bg-gradient-to-b from-slate-900 to-black">
+                <div className="w-12 h-12 sm:w-24 sm:h-24 bg-orange-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-orange-500 group-hover:scale-110 transition-transform cursor-pointer">
+                  <Play size={24} className="sm:w-12 sm:h-12" fill="currentColor" />
                 </div>
-                <p className="mt-8 text-white font-black uppercase tracking-widest text-xs animate-pulse">Clique para Iniciar a Mini-VSL</p>
-                <div className="absolute bottom-10 left-0 w-full px-8 flex items-center justify-between opacity-50">
-                   <div className="h-1 w-2/3 bg-white/20 rounded-full overflow-hidden">
-                      <div className="h-full bg-orange-600 w-1/4"></div>
-                   </div>
-                   <span className="text-[10px] text-white font-mono">03:45</span>
-                </div>
+                <p className="mt-4 sm:mt-8 text-white font-black uppercase tracking-widest text-[8px] sm:text-xs animate-pulse">Clique para Iniciar</p>
               </div>
               
               {/* Decorative Frame */}
-              <div className="absolute top-6 left-1/2 -translate-x-1/2 w-20 h-6 bg-slate-900 rounded-full"></div>
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-3 bg-slate-900 rounded-full"></div>
             </div>
 
             <div className="mt-4 flex items-center justify-center gap-2">
@@ -197,28 +191,27 @@ export default function ThankYou() {
                    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80"
                  ].map((url, i) => (
-                   <div key={i} className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-slate-100 border-[1.5px] sm:border-2 border-white flex items-center justify-center overflow-hidden shadow-sm">
+                   <div key={i} className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-slate-100 border-[1.5px] sm:border-2 border-white flex items-center justify-center overflow-hidden shadow-sm">
                      <img src={url} alt="Person" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                    </div>
                  ))}
               </div>
-              <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">
+              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">
                 {viewerNumbers[viewerIndex]} assistindo agora
               </span>
             </div>
           </div>
 
-          {/* Scroll Indicator */}
+          {/* Scroll Indicator - Fixed to viewport bottom on small screens if layout is tight */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
-            className="flex justify-center pb-12"
+            className="flex justify-center pb-4 sm:pb-12"
           >
             <motion.div
-              animate={{ y: [0, 8, 0] }}
+              animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-              className="flex flex-col items-center gap-3"
+              className="flex flex-col items-center gap-1.5"
             >
               <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Ver Ofertas Especiais</span>
               <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
