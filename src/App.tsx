@@ -308,20 +308,6 @@ function LandingPage() {
               </div>
             </div>
           </div>
-          
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-0 right-0 flex justify-center pointer-events-none z-20">
-            <motion.div 
-              animate={{ y: [0, 8, 0] }} 
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="flex flex-col items-center gap-2"
-            >
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Continue lendo</span>
-              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={12} strokeWidth={4} />
-              </div>
-            </motion.div>
-          </div>
         </div>
       </section>
 
@@ -375,20 +361,6 @@ function LandingPage() {
                 <p className="text-slate-500 text-sm sm:text-base leading-relaxed font-medium">{box.desc}</p>
               </div>
             ))}
-          </div>
-          
-          {/* Scroll Indicator */}
-          <div className="flex justify-center mt-12 mb-12 pointer-events-none">
-            <motion.div 
-              animate={{ y: [0, 8, 0] }} 
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Mãos à obra</span>
-              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={12} strokeWidth={4} />
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
@@ -454,20 +426,6 @@ function LandingPage() {
                 Seus dados estão 100% seguros com nossa política de privacidade.
               </p>
             </form>
-          </div>
-          
-          {/* Scroll Indicator */}
-          <div className="flex justify-center mt-12 mb-8 pointer-events-none">
-            <motion.div 
-              animate={{ y: [0, 8, 0], scale: [1, 1.05, 1] }} 
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Nossas Redes</span>
-              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={12} strokeWidth={4} />
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>

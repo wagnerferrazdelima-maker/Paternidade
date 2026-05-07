@@ -140,7 +140,7 @@ export default function ThankYou() {
         <span>PASSO 2 DE 2: CONFIGURANDO SEU ACESSO</span>
       </div>
 
-      <div className="relative h-[100dvh] lg:h-auto pt-4 sm:pt-12 pb-20 bg-white">
+      <div className="relative min-h-[100dvh] lg:min-h-0 pt-4 sm:pt-12 pb-12 sm:pb-20 bg-white">
         {/* Background Elements */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-orange-50/50 blur-3xl -z-0"></div>
 
@@ -159,7 +159,7 @@ export default function ThankYou() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-xl sm:text-4xl md:text-6xl font-black mb-2 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
+              className="text-xl sm:text-4xl md:text-6xl font-black mb-1 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
             >
               NÃO FECHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
             </motion.h1>
@@ -169,7 +169,7 @@ export default function ThankYou() {
           </div>
 
           {/* VSL Section - Portrait format, size optimized for mobile first fold */}
-          <div className="max-w-[160px] sm:max-w-md mx-auto mb-4 sm:mb-16 px-2">
+          <div className="max-w-[170px] sm:max-w-md mx-auto mb-6 sm:mb-16 px-2">
             <div className="relative aspect-[9/16] bg-black rounded-[1.5rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden border-[4px] sm:border-[12px] border-slate-900 group">
               {/* Fake Video Player Placeholder */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 sm:p-8 bg-gradient-to-b from-slate-900 to-black">
@@ -177,13 +177,19 @@ export default function ThankYou() {
                   <Play size={24} className="sm:w-12 sm:h-12" fill="currentColor" />
                 </div>
                 <p className="mt-4 sm:mt-8 text-white font-black uppercase tracking-widest text-[8px] sm:text-xs animate-pulse">Clique para Iniciar</p>
+                <div className="absolute bottom-6 sm:bottom-10 left-0 w-full px-4 sm:px-8 flex items-center justify-between opacity-50">
+                   <div className="h-1 w-2/3 bg-white/20 rounded-full overflow-hidden">
+                      <div className="h-full bg-orange-600 w-1/4"></div>
+                   </div>
+                   <span className="text-[8px] sm:text-[10px] text-white font-mono">03:45</span>
+                </div>
               </div>
               
               {/* Decorative Frame */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-3 bg-slate-900 rounded-full"></div>
+              <div className="absolute top-3 sm:top-6 left-1/2 -translate-x-1/2 w-12 sm:w-20 h-3 sm:h-6 bg-slate-900 rounded-full"></div>
             </div>
 
-            <div className="mt-4 flex items-center justify-center gap-2">
+            <div className="mt-3 flex items-center justify-center gap-2">
               <div className="flex -space-x-1.5 sm:-space-x-2 shrink-0">
                  {[
                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
@@ -202,25 +208,32 @@ export default function ThankYou() {
             </div>
           </div>
 
-          {/* Scroll Indicator - Fixed to viewport bottom on small screens if layout is tight */}
+          {/* Scroll Indicator - Positioned for mobile first fold */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex justify-center pb-4 sm:pb-12"
+            className="flex lg:hidden justify-center pb-2 cursor-pointer"
+            onClick={() => {
+              const element = document.getElementById('offers-section');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
               className="flex flex-col items-center gap-1.5"
             >
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Ver Ofertas Especiais</span>
-              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={12} strokeWidth={4} />
+              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Ver Ofertas Especiais</span>
+              <div className="w-5 h-5 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
+                <ChevronDown size={10} strokeWidth={4} />
               </div>
             </motion.div>
           </motion.div>
 
-          <span className="text-orange-600 font-black uppercase text-[12px] sm:text-4xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
+
+
+
+          <span id="offers-section" className="text-orange-600 font-black uppercase text-[12px] sm:text-4xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
             APROVEITE TODOS PRODUTOS EM OFERTA
           </span>
 
@@ -367,20 +380,6 @@ export default function ThankYou() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Scroll Indicator */}
-          <div className="flex justify-center pb-16">
-            <motion.div
-              animate={{ y: [0, 8, 0], scale: [1, 1.05, 1] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Baixar meu Brinde</span>
-              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={12} strokeWidth={4} />
-              </div>
-            </motion.div>
           </div>
 
           <div className="text-center pt-10 sm:pt-16 border-t border-slate-100">
