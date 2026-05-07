@@ -159,37 +159,37 @@ export default function ThankYou() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-xl sm:text-4xl md:text-6xl font-black mb-1 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
+              className="text-2xl sm:text-5xl md:text-7xl font-black mb-2 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
             >
               NÃO FECHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
             </motion.h1>
-            <p className="text-[10px] sm:text-xl text-slate-500 max-w-2xl mx-auto leading-tight sm:leading-relaxed font-medium px-2 sm:px-0">
+            <p className="text-xs sm:text-2xl text-slate-500 max-w-2xl mx-auto leading-tight sm:leading-relaxed font-medium px-2 sm:px-0">
               ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 font-bold underline decoration-orange-500 decoration-1 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
             </p>
           </div>
 
-          {/* VSL Section - Portrait format, size optimized for mobile first fold */}
-          <div className="max-w-[170px] sm:max-w-md mx-auto mb-6 sm:mb-16 px-2">
-            <div className="relative aspect-[9/16] bg-black rounded-[1.5rem] sm:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden border-[4px] sm:border-[12px] border-slate-900 group">
+          {/* VSL Section - Portrait format, increased size for better prominence */}
+          <div className="max-w-[240px] sm:max-w-xl mx-auto mb-8 sm:mb-20 px-2 text-left">
+            <div className="relative aspect-[9/16] bg-black rounded-[2rem] sm:rounded-[4rem] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.4)] overflow-hidden border-[6px] sm:border-[16px] border-slate-900 group">
               {/* Fake Video Player Placeholder */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 sm:p-8 bg-gradient-to-b from-slate-900 to-black">
-                <div className="w-12 h-12 sm:w-24 sm:h-24 bg-orange-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-orange-500 group-hover:scale-110 transition-transform cursor-pointer">
-                  <Play size={24} className="sm:w-12 sm:h-12" fill="currentColor" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 sm:p-12 bg-gradient-to-b from-slate-900 to-black">
+                <div className="w-20 h-20 sm:w-32 sm:h-32 bg-orange-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-orange-500 group-hover:scale-110 transition-transform cursor-pointer">
+                  <Play size={40} className="sm:w-16 sm:h-16 ml-1" fill="currentColor" />
                 </div>
-                <p className="mt-4 sm:mt-8 text-white font-black uppercase tracking-widest text-[8px] sm:text-xs animate-pulse">Clique para Iniciar</p>
-                <div className="absolute bottom-6 sm:bottom-10 left-0 w-full px-4 sm:px-8 flex items-center justify-between opacity-50">
-                   <div className="h-1 w-2/3 bg-white/20 rounded-full overflow-hidden">
+                <p className="mt-6 sm:mt-12 text-white font-black uppercase tracking-widest text-[10px] sm:text-base animate-pulse">Clique para Iniciar</p>
+                <div className="absolute bottom-10 sm:bottom-16 left-0 w-full px-8 sm:px-12 flex items-center justify-between opacity-50">
+                   <div className="h-1.5 w-2/3 bg-white/20 rounded-full overflow-hidden">
                       <div className="h-full bg-orange-600 w-1/4"></div>
                    </div>
-                   <span className="text-[8px] sm:text-[10px] text-white font-mono">03:45</span>
+                   <span className="text-[10px] sm:text-sm text-white font-mono font-bold">03:45</span>
                 </div>
               </div>
               
               {/* Decorative Frame */}
-              <div className="absolute top-3 sm:top-6 left-1/2 -translate-x-1/2 w-12 sm:w-20 h-3 sm:h-6 bg-slate-900 rounded-full"></div>
+              <div className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 w-16 sm:w-32 h-4 sm:h-8 bg-slate-900 rounded-full"></div>
             </div>
 
-            <div className="mt-3 flex items-center justify-center gap-2">
+            <div className="mt-4 flex items-center justify-center gap-3">
               <div className="flex -space-x-1.5 sm:-space-x-2 shrink-0">
                  {[
                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
@@ -207,33 +207,7 @@ export default function ThankYou() {
               </span>
             </div>
           </div>
-
-          {/* Scroll Indicator - Positioned for mobile first fold */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex lg:hidden justify-center pb-2 cursor-pointer"
-            onClick={() => {
-              const element = document.getElementById('offers-section');
-              element?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-              className="flex flex-col items-center gap-1.5"
-            >
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Ver Ofertas Especiais</span>
-              <div className="w-5 h-5 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
-                <ChevronDown size={10} strokeWidth={4} />
-              </div>
-            </motion.div>
-          </motion.div>
-
-
-
-
-          <span id="offers-section" className="text-orange-600 font-black uppercase text-[12px] sm:text-4xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
+          <span id="offers-section" className="text-orange-600 font-black uppercase text-base sm:text-5xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
             APROVEITE TODOS PRODUTOS EM OFERTA
           </span>
 
@@ -263,8 +237,8 @@ export default function ThankYou() {
                         <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {physicalBook.oldPrice.toFixed(2).replace('.', ',')}</span>
                         <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600">Por Apenas R$ {physicalBook.price.toFixed(2).replace('.', ',')}</p>
                       </div>
-                      <p className="text-xs sm:text-sm font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{physicalBook.title}</p>
-                      <p className="text-[10px] sm:text-[11px] text-slate-500 leading-tight font-medium max-w-sm">{physicalBook.description}</p>
+                      <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{physicalBook.title}</p>
+                      <p className="text-[11px] sm:text-xs text-slate-500 leading-tight font-medium max-w-sm">{physicalBook.description}</p>
                     </div>
                   </div>
                   <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ${
@@ -313,9 +287,9 @@ export default function ThankYou() {
                               <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
                               <p className={`text-[10px] sm:text-xs font-black uppercase tracking-tighter ${isCombo ? 'text-orange-700' : 'text-orange-600'}`}>Por Apenas + R$ {bump.price.toFixed(2).replace('.', ',')}</p>
                             </div>
-                            <p className="text-xs sm:text-sm font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{bump.title}</p>
+                            <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{bump.title}</p>
                             {bump.description && (
-                              <p className={`text-[10px] sm:text-[11px] leading-tight font-medium max-w-sm ${isCombo ? 'text-slate-700' : 'text-slate-500'}`}>
+                              <p className={`text-[11px] sm:text-xs leading-tight font-medium max-w-sm ${isCombo ? 'text-slate-700' : 'text-slate-500'}`}>
                                 {isCombo ? (
                                   <>
                                     <span className="text-orange-700 font-bold">🚨 ESTA É SUA ÚNICA CHANCE!</span> Leve TUDO (Ebooks + Curso) por preço de custo. <span className="text-orange-600 font-bold uppercase">Pare de lutar sozinho!</span> Tenha o arsenal completo para formar filhos resilientes agora. <span className="text-orange-600 font-bold">ÚLTIMA CHANCE DE LEVAR TUDO POR ESTE VALOR!</span> 🎯
@@ -368,9 +342,9 @@ export default function ThankYou() {
 
                   <button 
                     onClick={handleWhatsAppOrder}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 group text-base sm:text-lg uppercase tracking-tighter cursor-pointer"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 group text-lg sm:text-2xl uppercase tracking-tighter cursor-pointer"
                   >
-                    <ShoppingBag size={22} className="group-hover:rotate-12 transition-transform" />
+                    <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
                     <span>GARANTIR MEU PEDIDO</span>
                   </button>
                   
