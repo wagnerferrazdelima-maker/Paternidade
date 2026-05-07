@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common helpers
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { 
+      return isSignedIn() && (
+        request.auth.token.email == 'wagnerferrazdelima@gmail.com' && 
+        request.auth.token.email_verified == true
+      ); 
+    }
+
+    // Validation for Leads
+    function isValidLead(data) {
+      return data.keys().hasAll(['name', 'email', 'phone', 'createdAt']) &&
+             data.keys().size() == 4 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 200 &&
+             data.phone is string && data.phone.size() > 0 && data.phone.size() <= 50 &&
+             (data.createdAt == request.time || data.createdAt == null); 
+    }
+
+    match /leads/{leadId} {
+      // Anyone can submit a lead (create only)
+      allow create: if isValidLead(request.resource.data);
+      // Only the admin can read the leads
+      allow read: if isAdmin();
+    }
+  }
+}

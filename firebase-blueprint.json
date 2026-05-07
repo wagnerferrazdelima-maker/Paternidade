@@ -1,0 +1,22 @@
+{
+  "entities": {
+    "Lead": {
+      "title": "Lead",
+      "description": "Informações de contato capturadas no formulário",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nome completo" },
+        "email": { "type": "string", "format": "email", "description": "Endereço de e-mail" },
+        "phone": { "type": "string", "description": "Número de celular/whatsapp" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Data de criação" }
+      },
+      "required": ["name", "email", "phone"]
+    }
+  },
+  "firestore": {
+    "leads": {
+      "schema": "Lead",
+      "description": "Coleção de leads capturados"
+    }
+  }
+}
