@@ -22,9 +22,23 @@ import {
 } from 'lucide-react';
 
 export default function ThankYou() {
-  const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
+  const [selectedBumps, setSelectedBumps] = useState<string[]>(() => {
+    // Tenta carregar seleções anteriores do localStorage no refresh
+    const saved = localStorage.getItem('paternidade_selected_bumps');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [viewerIndex, setViewerIndex] = useState(0);
   const viewerNumbers = [37, 23, 17, 45, 67];
+
+  useEffect(() => {
+    // Garante que a página comece no topo ao carregar/atualizar
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    // Persiste as seleções sempre que mudarem
+    localStorage.setItem('paternidade_selected_bumps', JSON.stringify(selectedBumps));
+  }, [selectedBumps]);
 
   useEffect(() => {
     const interval = setInterval(() => {

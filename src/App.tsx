@@ -62,7 +62,24 @@ function LandingPage() {
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', whatsapp: '' });
   const [errors, setErrors] = useState<{email?: string, whatsapp?: string}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 24, seconds: 59 });
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const saved = localStorage.getItem('paternidade_timer');
+    if (saved) {
+      const { value, timestamp } = JSON.parse(saved);
+      const now = Date.now();
+      const elapsedSeconds = Math.floor((now - timestamp) / 1000);
+      
+      const totalSeconds = (value.hours * 3600) + (value.minutes * 60) + value.seconds;
+      const remainingSeconds = Math.max(0, totalSeconds - elapsedSeconds);
+      
+      return {
+        hours: Math.floor(remainingSeconds / 3600),
+        minutes: Math.floor((remainingSeconds % 3600) / 60),
+        seconds: remainingSeconds % 60
+      };
+    }
+    return { hours: 0, minutes: 24, seconds: 59 };
+  });
   const navigate = useNavigate();
 
   // Countdown timer for urgency
@@ -86,6 +103,11 @@ function LandingPage() {
       }
     };
     testConnection();
+
+    localStorage.setItem('paternidade_timer', JSON.stringify({
+      value: timeLeft,
+      timestamp: Date.now()
+    }));
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -144,6 +166,9 @@ function LandingPage() {
         phone: formData.whatsapp,
         createdAt: serverTimestamp(),
       });
+      // Salva no localStorage que o formulário foi concluído para persistência
+      localStorage.setItem('paternidade_form_completed', 'true');
+      
       // Redireciona para a página de obrigado
       navigate('/obrigado');
     } catch (error) {
