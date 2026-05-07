@@ -17,7 +17,8 @@ import {
   Video,
   ShoppingBag,
   Heart,
-  Plus
+  Plus,
+  ChevronDown
 } from 'lucide-react';
 
 export default function ThankYou() {
@@ -207,6 +208,25 @@ export default function ThankYou() {
             </div>
           </div>
 
+          {/* Scroll Indicator */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="flex justify-center pb-12"
+          >
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+              className="flex flex-col items-center gap-3"
+            >
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Ver Ofertas Especiais</span>
+              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
+                <ChevronDown size={12} strokeWidth={4} />
+              </div>
+            </motion.div>
+          </motion.div>
+
           <span className="text-orange-600 font-black uppercase text-[12px] sm:text-4xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
             APROVEITE TODOS PRODUTOS EM OFERTA
           </span>
@@ -354,6 +374,20 @@ export default function ThankYou() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          <div className="flex justify-center pb-16">
+            <motion.div
+              animate={{ y: [0, 8, 0], scale: [1, 1.05, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="flex flex-col items-center gap-3"
+            >
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-500 bg-black px-2 py-0.5 rounded-full border border-orange-500/20 shadow-xl">Baixar meu Brinde</span>
+              <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center text-orange-500 shadow-lg border border-orange-500/20">
+                <ChevronDown size={12} strokeWidth={4} />
+              </div>
+            </motion.div>
           </div>
 
           <div className="text-center pt-10 sm:pt-16 border-t border-slate-100">
