@@ -179,7 +179,7 @@ export default function ThankYou() {
               transition={{ delay: 0.2 }}
               className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-8 tracking-tighter leading-[0.9] uppercase"
             >
-              ACOMPANHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
+              RECEBA SEU <br/> <span className="text-orange-600">LIVRO FÍSICO</span> EM CASA
             </motion.h1>
             <p className="text-xs sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-tight sm:leading-relaxed font-bold px-2 sm:px-0 uppercase tracking-tight">
               ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 underline decoration-orange-500 decoration-2 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
