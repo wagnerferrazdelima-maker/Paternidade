@@ -32,5 +32,10 @@ service cloud.firestore {
       // Only the admin can read the leads
       allow read: if isAdmin();
     }
+
+    // Allow connection testing
+    match /test/{docId} {
+      allow read: if true;
+    }
   }
 }

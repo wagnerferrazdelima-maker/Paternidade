@@ -23,9 +23,13 @@ import {
 
 export default function ThankYou() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>(() => {
-    // Tenta carregar seleções anteriores do localStorage no refresh
-    const saved = localStorage.getItem('paternidade_selected_bumps');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('paternidade_selected_bumps');
+      return saved ? JSON.parse(saved) : ['physical_book'];
+    } catch (e) {
+      console.error("Error parsing saved bumps", e);
+      return ['physical_book'];
+    }
   });
   const [viewerIndex, setViewerIndex] = useState(0);
   const viewerNumbers = [37, 23, 17, 45, 67];
@@ -159,13 +163,13 @@ export default function ThankYou() {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-orange-50/50 blur-3xl -z-0"></div>
 
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl h-full flex flex-col justify-center relative z-10">
-          <div className="text-center mb-4 sm:mb-12">
+          <div className="text-center mb-6 sm:mb-16">
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-2 sm:mb-6 border border-green-100"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full text-[10px] sm:text-sm font-black uppercase tracking-widest mb-4 sm:mb-8 shadow-xl shadow-green-100"
             >
-              <CheckCircle2 size={12} className="sm:w-3.5 sm:h-3.5" />
+              <CheckCircle2 size={14} className="sm:w-5 sm:h-5" />
               <span>Inscrição Confirmada</span>
             </motion.div>
 
@@ -173,12 +177,12 @@ export default function ThankYou() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-2xl sm:text-5xl md:text-7xl font-black mb-2 sm:mb-6 tracking-tighter leading-[0.95] uppercase"
+              className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-8 tracking-tighter leading-[0.9] uppercase"
             >
               NÃO FECHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
             </motion.h1>
-            <p className="text-xs sm:text-2xl text-slate-500 max-w-2xl mx-auto leading-tight sm:leading-relaxed font-medium px-2 sm:px-0">
-              ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 font-bold underline decoration-orange-500 decoration-1 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
+            <p className="text-xs sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-tight sm:leading-relaxed font-bold px-2 sm:px-0 uppercase tracking-tight">
+              ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 underline decoration-orange-500 decoration-2 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
             </p>
           </div>
 
@@ -348,9 +352,9 @@ export default function ThankYou() {
                        </div>
                      ))}
                      {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
-                     <div className="flex justify-between items-center">
-                        <span className="text-xs font-black uppercase tracking-widest text-slate-400">Total Investimento</span>
-                        <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tighter">R$ {totalPrice.toFixed(2).replace('.', ',')}</span>
+                     <div className="flex justify-between items-center py-2">
+                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
+                        <span className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter">R$ {totalPrice.toFixed(2).replace('.', ',')}</span>
                      </div>
                   </div>
 

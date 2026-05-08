@@ -82,6 +82,14 @@ function LandingPage() {
   });
   const navigate = useNavigate();
 
+  // Check if already completed on mount
+  useEffect(() => {
+    const isCompleted = localStorage.getItem('paternidade_form_completed');
+    if (isCompleted === 'true' && window.location.pathname !== '/obrigado') {
+      navigate('/obrigado');
+    }
+  }, [navigate]);
+
   // Countdown timer for urgency
   useEffect(() => {
     // Test connection to Firestore
