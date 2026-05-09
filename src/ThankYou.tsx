@@ -345,16 +345,31 @@ export default function ThankYou() {
                      {selectedBumps.length === 0 && (
                        <p className="text-xs font-bold text-slate-400 italic text-center py-4">Nenhum item selecionado</p>
                      )}
-                     {allItems.filter(b => selectedBumps.includes(b.id)).map(b => (
-                       <div key={b.id} className="flex justify-between items-center text-sm font-bold text-orange-600 animate-in fade-in slide-in-from-left-2 transition-all">
-                          <span className="max-w-[180px] break-words line-clamp-1">+ {b.title.split(': ')[1] || b.title.split(' ')[1]}</span>
-                          <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
-                       </div>
-                     ))}
+                     <div className="space-y-2">
+                       {allItems.filter(b => selectedBumps.includes(b.id)).map(b => (
+                         <motion.div 
+                           key={b.id} 
+                           initial={{ opacity: 0, x: -10 }}
+                           animate={{ opacity: 1, x: 0 }}
+                           exit={{ opacity: 0, x: 10 }}
+                           className="flex justify-between items-center text-sm font-bold text-orange-600"
+                         >
+                            <span className="max-w-[180px] break-words line-clamp-1">+ {b.title.split(': ')[1] || b.title.split(' ')[1]}</span>
+                            <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
+                         </motion.div>
+                       ))}
+                     </div>
                      {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
                      <div className="flex justify-between items-center py-2">
                         <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
-                        <span className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter">R$ {totalPrice.toFixed(2).replace('.', ',')}</span>
+                        <motion.span 
+                          key={totalPrice}
+                          initial={{ scale: 0.95, opacity: 0.8 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter"
+                        >
+                          R$ {totalPrice.toFixed(2).replace('.', ',')}
+                        </motion.span>
                      </div>
                   </div>
 
