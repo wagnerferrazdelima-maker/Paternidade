@@ -95,11 +95,11 @@ export default function ThankYou() {
     },
     { 
       id: 'combo', 
-      title: '💎 COMBO PREMIUM: ACESSO TOTAL', 
+      title: '💎 COMBO PREMIUM: ACESSO TOTAL (TUDO LIBERADO)', 
       price: 197.00, 
       oldPrice: 655.00,
-      icon: <Play size={20} />,
-      description: '🚨 ESTA É SUA ÚNICA CHANCE! Leve TUDO (Ebooks + Curso) por preço de banana. Pare de tentar sozinho! Garanta o arsenal completo e forme filhos resilientes agora. ECONOMIA REAL DE R$ 458,00! 🎯'
+      icon: <Play size={24} />,
+      description: 'Esta é a sua oportunidade final de garantir o arsenal completo por uma fração do preço. Se você quer resultados rápidos e quer parar de errar com seus filhos, este combo é para você.'
     },
   ];
 
@@ -283,44 +283,121 @@ export default function ThankYou() {
                   {bumps.map((bump) => {
                     const isCombo = bump.id === 'combo';
                     const isSelected = selectedBumps.includes(bump.id);
+                    
+                    if (isCombo) {
+                      return (
+                        <div 
+                          key={bump.id}
+                          onClick={() => toggleBump(bump.id)}
+                          className={`relative p-6 sm:p-10 rounded-[2.5rem] border-[3px] transition-all cursor-pointer group overflow-hidden ${
+                            isSelected
+                              ? 'bg-orange-100 border-orange-600 ring-8 ring-orange-600/10 shadow-2xl scale-[1.03]' 
+                              : 'bg-orange-50 border-orange-200 shadow-xl hover:border-orange-400'
+                          }`}
+                        >
+                          {/* Persuasive Background Text */}
+                          <div className="absolute top-0 right-0 font-black text-6xl text-orange-200/20 -translate-y-4 translate-x-4 uppercase select-none">
+                            OFERTA
+                          </div>
+
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[10px] sm:text-xs font-black px-6 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-widest flex items-center gap-2">
+                             💎 O COMBO QUE TRANSFORMA FAMÍLIAS 💎
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row items-start gap-6 relative z-10">
+                            <div className={`h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center transition-colors shadow-lg ${
+                              isSelected ? 'bg-orange-600 text-white' : 'bg-orange-200 text-orange-700'
+                            }`}>
+                              <Play size={32} fill="currentColor" />
+                            </div>
+
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
+                                <span className="text-xs sm:text-sm font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
+                                <div className="bg-orange-600 text-white px-3 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest">ECONOMIA DE R$ 458,00</div>
+                              </div>
+                              
+                              <h4 className="text-xl sm:text-3xl font-black text-slate-900 uppercase tracking-tighter mb-4 leading-none">
+                                {bump.title}
+                              </h4>
+
+                              <div className="space-y-3 mb-6 bg-white/50 p-4 rounded-2xl border border-orange-200/50">
+                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
+                                  <span>TODAS AS AULAS DO CURSO (Acesso Vitalício)</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
+                                  <span>TODOS OS EBOOKS E MATERIAIS DE APOIO</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
+                                  <span>GRUPO VIP + TREINAMENTOS ESPECIAIS</span>
+                                </div>
+                              </div>
+
+                              <p className="text-sm sm:text-base leading-tight font-bold text-slate-700 max-w-xl">
+                                <span className="text-orange-600 uppercase">🚨 PARE DE TENTAR SOZINHO!</span> Adquira agora o treinamento COMPLETO para deixar um legado inabalável. Resultados comprovados com <span className="underline decoration-orange-400">metodologia direta e prática</span>.
+                              </p>
+                              
+                              <div className="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Preço Especial Hoje</span>
+                                  <p className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter leading-none">
+                                    R$ {bump.price.toFixed(2).replace('.', ',')}
+                                  </p>
+                                </div>
+                                
+                                <div className={`flex-1 w-full sm:w-auto h-14 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest transition-all ${
+                                  isSelected ? 'bg-orange-600 border-orange-600 text-white shadow-xl shadow-orange-200' : 'bg-white border-orange-200 text-orange-600 hover:bg-orange-100'
+                                }`}>
+                                   {isSelected ? (
+                                     <>
+                                       <CheckCircle2 size={20} />
+                                       <span>SELECIONADO</span>
+                                     </>
+                                   ) : (
+                                     <span>ADICIONAR AO PEDIDO</span>
+                                   )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Urgent Badge */}
+                          <div className="mt-6 pt-4 border-t border-orange-200/50 flex items-center gap-2">
+                             <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>
+                             <span className="text-[10px] font-black text-orange-700 uppercase tracking-widest">Oportunidade única disponível apenas nesta página</span>
+                          </div>
+                        </div>
+                      );
+                    }
+
                     return (
                       <div 
                         key={bump.id}
                         onClick={() => toggleBump(bump.id)}
                         className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all cursor-pointer flex items-center justify-between group ${
-                          isCombo 
-                            ? isSelected
-                              ? 'bg-orange-100 border-orange-600 ring-4 ring-orange-600/20 shadow-2xl scale-[1.02]' 
-                              : 'bg-orange-50 border-orange-300 shadow-md hover:border-orange-500'
-                            : isSelected
-                              ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
-                              : 'bg-white border-slate-100 hover:border-slate-300'
+                          isSelected
+                            ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
+                            : 'bg-white border-slate-100 hover:border-slate-300'
                         }`}
                       >
-                        {isCombo && (
-                          <div className="absolute -top-3 left-6 bg-orange-600 text-white text-[9px] sm:text-[10px] font-black px-3 py-1 rounded-full shadow-lg z-10">
-                            💎 MELHOR ESCOLHA - ECONOMIZE R$ 458,00 💎
-                          </div>
-                        )}
                         <div className="flex items-start gap-3 sm:gap-4 flex-1">
                           <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
-                            isSelected ? 'bg-orange-600 text-white' : isCombo ? 'bg-orange-200 text-orange-700' : 'bg-slate-100 text-slate-400'
+                            isSelected ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
                           }`}>
                             {bump.icon}
                           </div>
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
                               <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
-                              <p className={`text-[10px] sm:text-xs font-black uppercase tracking-tighter ${isCombo ? 'text-orange-700' : 'text-orange-600'}`}>Por Apenas + R$ {bump.price.toFixed(2).replace('.', ',')}</p>
+                              <p className={`text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600`}>Por Apenas + R$ {bump.price.toFixed(2).replace('.', ',')}</p>
                             </div>
                             <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{bump.title}</p>
                             {bump.description && (
-                              <p className={`text-[11px] sm:text-xs leading-tight font-medium max-w-sm ${isCombo ? 'text-slate-700' : 'text-slate-500'}`}>
-                                {isCombo ? (
-                                  <>
-                                    <span className="text-orange-700 font-bold">🚨 ESTA É SUA ÚNICA CHANCE!</span> Leve TUDO (Ebooks + Curso) por preço de custo. <span className="text-orange-600 font-bold uppercase">Pare de lutar sozinho!</span> Tenha o arsenal completo para formar filhos resilientes agora. <span className="text-orange-600 font-bold">ÚLTIMA CHANCE DE LEVAR TUDO POR ESTE VALOR!</span> 🎯
-                                  </>
-                                ) : bump.description}
+                              <p className={`text-[11px] sm:text-xs leading-tight font-medium max-w-sm text-slate-500`}>
+                                {bump.description}
                               </p>
                             )}
                           </div>
