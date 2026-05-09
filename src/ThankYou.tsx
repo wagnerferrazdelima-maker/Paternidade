@@ -372,10 +372,10 @@ export default function ThankYou() {
                         <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
                         <motion.div 
                           key={totalPrice}
-                          initial={{ scale: 1.1, color: "#ea580c" }}
-                          animate={{ scale: 1, color: "#ea580c" }}
+                          initial={{ scale: 1.1, color: "#16a34a" }}
+                          animate={{ scale: 1, color: "#16a34a" }}
                           transition={{ type: "spring", stiffness: 300 }}
-                          className="text-4xl sm:text-5xl font-black tracking-tighter"
+                          className="text-4xl sm:text-5xl font-black tracking-tighter text-green-600"
                         >
                           R$ {totalPrice.toFixed(2).replace('.', ',')}
                         </motion.div>
