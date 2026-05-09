@@ -111,6 +111,20 @@ export default function ThankYou() {
     );
   };
 
+  const getShortTitle = (title: string) => {
+    // Remove emojis and common prefixes, then take the first part or use a map
+    const clean = title
+      .replace(/[🎧🌿👨‍👩‍👧‍👦🎓💎]/g, '')
+      .replace(/LIVRO FÍSICO: /g, '')
+      .replace(/TREINAMENTO DIGITAL: /g, '')
+      .replace(/CURSO GRAVADO: /g, '')
+      .replace(/GRUPO VIP ANUAL PARA PAIS/g, 'GRUPO VIP PAIS')
+      .replace(/AUDIOLIVRO COMPLETO EM MP3/g, 'AUDIOLIVRO MP3')
+      .replace(/COMBO PREMIUM: ACESSO TOTAL/g, 'COMBO PREMIUM 💎')
+      .trim();
+    return clean;
+  };
+
   const totalPrice = allItems
     .filter(b => selectedBumps.includes(b.id))
     .reduce((sum, b) => sum + b.price, 0);
@@ -127,13 +141,7 @@ export default function ThankYou() {
     let message = `Olá Wagner! Gostaria de adicionar os seguintes itens ao meu pedido:\n\n`;
     
     selectedItems.forEach(item => {
-      const cleanTitle = item.title
-        .replace('🎧 ', '')
-        .replace('🌿 ', '')
-        .replace('👨‍👩‍👧‍👦 ', '')
-        .replace('🎓 ', '')
-        .replace('💎 ', '');
-      message += `✅ *${cleanTitle}* - R$ ${item.price.toFixed(2).replace('.', ',')}\n`;
+      message += `✅ *${getShortTitle(item.title)}* - R$ ${item.price.toFixed(2).replace('.', ',')}\n`;
     });
     
     message += `\n*TOTAL:* R$ ${totalPrice.toFixed(2).replace('.', ',')}\n\n`;
@@ -354,31 +362,37 @@ export default function ThankYou() {
                            exit={{ opacity: 0, x: 10 }}
                            className="flex justify-between items-center text-sm font-bold text-orange-600"
                          >
-                            <span className="max-w-[180px] break-words line-clamp-1">+ {b.title.split(': ')[1] || b.title.split(' ')[1]}</span>
+                            <span className="max-w-[200px] break-words line-clamp-1">+ {getShortTitle(b.title)}</span>
                             <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
                          </motion.div>
                        ))}
                      </div>
                      {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
-                     <div className="flex justify-between items-center py-2">
+                     <div className="flex flex-col gap-1 py-1">
                         <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
-                        <motion.span 
+                        <motion.div 
                           key={totalPrice}
-                          initial={{ scale: 0.95, opacity: 0.8 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter"
+                          initial={{ scale: 1.1, color: "#ea580c" }}
+                          animate={{ scale: 1, color: "#ea580c" }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                          className="text-4xl sm:text-5xl font-black tracking-tighter"
                         >
                           R$ {totalPrice.toFixed(2).replace('.', ',')}
-                        </motion.span>
+                        </motion.div>
                      </div>
                   </div>
 
                   <button 
                     onClick={handleWhatsAppOrder}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 group text-lg sm:text-2xl uppercase tracking-tighter cursor-pointer"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center group cursor-pointer"
                   >
-                    <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
-                    <span>GARANTIR MEU PEDIDO</span>
+                    <div className="flex items-center gap-3 mb-1">
+                      <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
+                      <span className="text-xl sm:text-2xl uppercase tracking-tighter">GARANTIR MEU PEDIDO</span>
+                    </div>
+                    <span className="text-xs sm:text-sm opacity-80 font-bold uppercase tracking-widest bg-orange-700/50 px-4 py-1 rounded-full">
+                      Total: R$ {totalPrice.toFixed(2).replace('.', ',')}
+                    </span>
                   </button>
                   
                   <p className="mt-4 text-[10px] text-slate-400 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2">
