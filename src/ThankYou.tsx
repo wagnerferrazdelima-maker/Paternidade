@@ -309,48 +309,48 @@ export default function ThankYou() {
 
                           <div className="relative z-10">
                             <div className="flex items-center gap-3 mb-3">
-                              <div className={`h-10 w-10 shrink-0 rounded-lg flex items-center justify-center shadow-inner ${
+                              <div className={`h-12 w-12 shrink-0 rounded-lg flex items-center justify-center shadow-inner ${
                                 isSelected ? 'bg-orange-600 text-white' : 'bg-slate-700 text-slate-300'
                               }`}>
-                                <Play size={20} fill="currentColor" />
+                                <Play size={24} fill="currentColor" />
                               </div>
                               <div>
-                                <span className="block text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] leading-none mb-1">Oferta Irrecusável</span>
-                                <h4 className="text-lg sm:text-2xl font-black text-white uppercase tracking-tighter leading-none">
+                                <span className="block text-xs font-black text-orange-500 uppercase tracking-[0.2em] leading-none mb-1">Oferta Irrecusável</span>
+                                <h4 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tighter leading-none">
                                   {bump.title}
                                 </h4>
                               </div>
                             </div>
 
-                            <p className="text-[11px] sm:text-xs text-slate-300 font-medium leading-tight mb-4 border-l-2 border-orange-500 pl-3">
-                              <span className="text-white font-bold">PARE DE TENTAR SOZINHO!</span> A maioria dos pais falha porque não tem um mapa. Este é o seu arsenal completo para blindar sua família e deixar um legado. <span className="text-orange-400">Você economiza R$ 458,00 agora.</span>
+                            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-tight mb-4 border-l-2 border-orange-500 pl-3">
+                              <span className="text-white font-bold">PARE DE TENTAR SOZINHO!</span> A maioria dos pais falha porque não tem um mapa. Este é o seu arsenal completo para <span className="text-white font-bold underline decoration-orange-500">blindar sua família</span> e deixar um legado. <span className="text-orange-400 font-bold">Você economizou R$ 458,00 agora.</span>
                             </p>
 
                             <div className="grid grid-cols-2 gap-2 mb-4">
                               <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
-                                <CheckCircle2 size={12} className="text-orange-500 shrink-0" />
-                                <span className="text-[9px] font-bold text-slate-200 uppercase tracking-tight">Ebooks + Curso</span>
+                                <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
+                                <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Ebooks + Curso</span>
                               </div>
                               <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
-                                <CheckCircle2 size={12} className="text-orange-500 shrink-0" />
-                                <span className="text-[9px] font-bold text-slate-200 uppercase tracking-tight">Grupo VIP Pais</span>
+                                <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
+                                <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Grupo VIP Pais</span>
                               </div>
                             </div>
 
-                            <div className="flex items-end justify-between gap-4">
+                            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4">
                               <div className="flex flex-col">
-                                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest line-through">De R$ 655,00</span>
-                                <p className="text-3xl sm:text-4xl font-black text-white tracking-tighter leading-none">
+                                <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest line-through">De R$ 655,00</span>
+                                <p className="text-4xl sm:text-5xl font-black text-green-500 tracking-tighter leading-none">
                                   R$ {bump.price.toFixed(2).replace('.', ',')}
                                 </p>
                               </div>
                               
-                              <div className={`h-12 flex-1 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-[11px] transition-all ${
+                              <div className={`h-14 flex-1 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs sm:text-sm transition-all bg-orange-600 border-orange-600 text-white shadow-lg ${
                                 isSelected 
-                                  ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-500/20' 
-                                  : 'bg-transparent border-slate-600 text-slate-400 hover:border-orange-500 hover:text-white'
+                                  ? 'shadow-orange-500/40 ring-4 ring-orange-500/20' 
+                                  : 'hover:bg-orange-700 hover:border-orange-700'
                               }`}>
-                                 {isSelected ? <CheckCircle2 size={18} /> : null}
+                                 {isSelected ? <CheckCircle2 size={22} /> : null}
                                  <span>{isSelected ? 'SELECIONADO' : 'ADICIONAR AGORA'}</span>
                               </div>
                             </div>
