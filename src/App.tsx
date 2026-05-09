@@ -159,10 +159,10 @@ function LandingPage() {
     setIsSubmitting(true);
     
     try {
-      // Integração com Google Forms (Entry IDs fornecidos)
-      const enviarParaGoogleForms = (nome: string, email: string, whatsapp: string) => {
+      // Integração Direta com Google Forms e Planilha
+      const sendToGoogleForms = (name: string, email: string, whatsapp: string) => {
         const googleFormData = new URLSearchParams();
-        googleFormData.append("entry.211052488", nome);
+        googleFormData.append("entry.211052488", name);
         googleFormData.append("entry.792890973", email);
         googleFormData.append("entry.556642696", whatsapp);
 
@@ -173,11 +173,11 @@ function LandingPage() {
             "Content-Type": "application/x-www-form-urlencoded"
           },
           body: googleFormData
-        });
+        }).catch(err => console.error("Erro ao enviar para Google Forms:", err));
       };
 
-      // Executa envio para Google Forms
-      enviarParaGoogleForms(formData.name, formData.email, formData.whatsapp);
+      // Dispara o envio
+      sendToGoogleForms(formData.name, formData.email, formData.whatsapp);
 
       const path = 'leads';
       await addDoc(collection(db, path), {

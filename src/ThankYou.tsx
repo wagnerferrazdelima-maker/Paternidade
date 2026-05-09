@@ -99,7 +99,7 @@ export default function ThankYou() {
       price: 197.00, 
       oldPrice: 655.00,
       icon: <Play size={24} />,
-      description: 'Esta é a sua oportunidade final de garantir o arsenal completo por uma fração do preço. Se você quer resultados rápidos e quer parar de errar com seus filhos, este combo é para você.'
+      description: 'PARE DE TENTAR SOZINHO! A maioria dos pais falha porque não tem um mapa. Este é o seu arsenal completo para blindar sua família e deixar um legado. Você economizou R$ 458,00 agora.'
     },
   ];
 
@@ -289,15 +289,15 @@ export default function ThankYou() {
                         <div 
                           key={bump.id}
                           onClick={() => toggleBump(bump.id)}
-                          className={`relative p-5 sm:p-6 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
+                          className={`relative p-5 sm:p-8 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
                             isSelected
                               ? 'bg-slate-900 border-orange-500 ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
                               : 'bg-slate-800 border-slate-700 shadow-xl hover:border-orange-500/50'
                           }`}
                         >
                           {/* Floating Persuasion Badge */}
-                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20 animate-bounce sm:animate-none">
-                             <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap">
+                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20">
+                             <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap text-center">
                                COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200">ECONOMIZE R$ 458 SOMENTE AGORA</span>
                              </span>
                           </div>
@@ -358,7 +358,7 @@ export default function ThankYou() {
                           
                           {/* Warning text */}
                           <div className="mt-4 pt-3 border-t border-slate-700/50">
-                             <p className="text-[8px] font-bold text-slate-500 uppercase tracking-[0.15em] text-center italic">
+                             <p className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] text-center italic">
                                *Não disponível em nenhum outro lugar por este valor
                              </p>
                           </div>
