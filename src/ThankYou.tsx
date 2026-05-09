@@ -289,85 +289,68 @@ export default function ThankYou() {
                         <div 
                           key={bump.id}
                           onClick={() => toggleBump(bump.id)}
-                          className={`relative p-6 sm:p-10 rounded-[2.5rem] border-[3px] transition-all cursor-pointer group overflow-hidden ${
+                          className={`relative p-4 sm:p-6 rounded-[2rem] border-[3px] transition-all cursor-pointer group overflow-hidden ${
                             isSelected
-                              ? 'bg-orange-100 border-orange-600 ring-8 ring-orange-600/10 shadow-2xl scale-[1.03]' 
+                              ? 'bg-orange-100 border-orange-600 ring-4 ring-orange-600/10 shadow-2xl' 
                               : 'bg-orange-50 border-orange-200 shadow-xl hover:border-orange-400'
                           }`}
                         >
-                          {/* Persuasive Background Text */}
-                          <div className="absolute top-0 right-0 font-black text-6xl text-orange-200/20 -translate-y-4 translate-x-4 uppercase select-none">
-                            OFERTA
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[8px] sm:text-[10px] font-black px-4 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest flex items-center gap-2">
+                             💎 COMBO TRANSFORMAÇÃO TOTAL 💎
                           </div>
 
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-600 text-white text-[10px] sm:text-xs font-black px-6 py-1.5 rounded-full shadow-lg z-10 uppercase tracking-widest flex items-center gap-2">
-                             💎 O COMBO QUE TRANSFORMA FAMÍLIAS 💎
-                          </div>
-
-                          <div className="flex flex-col sm:flex-row items-start gap-6 relative z-10">
-                            <div className={`h-16 w-16 shrink-0 rounded-2xl flex items-center justify-center transition-colors shadow-lg ${
+                          <div className="flex flex-col sm:flex-row items-start gap-4 relative z-10">
+                            <div className={`h-12 w-12 shrink-0 rounded-xl flex items-center justify-center transition-colors shadow-md ${
                               isSelected ? 'bg-orange-600 text-white' : 'bg-orange-200 text-orange-700'
                             }`}>
-                              <Play size={32} fill="currentColor" />
+                              <Play size={24} fill="currentColor" />
                             </div>
 
                             <div className="flex-1">
-                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
-                                <span className="text-xs sm:text-sm font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
-                                <div className="bg-orange-600 text-white px-3 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest">ECONOMIA DE R$ 458,00</div>
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+                                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
+                                <div className="bg-orange-600 text-white px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest leading-none">SALVE R$ 458</div>
                               </div>
                               
-                              <h4 className="text-xl sm:text-3xl font-black text-slate-900 uppercase tracking-tighter mb-4 leading-none">
+                              <h4 className="text-base sm:text-xl font-black text-slate-900 uppercase tracking-tighter mb-2 leading-tight">
                                 {bump.title}
                               </h4>
 
-                              <div className="space-y-3 mb-6 bg-white/50 p-4 rounded-2xl border border-orange-200/50">
-                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
-                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
-                                  <span>TODAS AS AULAS DO CURSO (Acesso Vitalício)</span>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-4 bg-white/40 p-3 rounded-xl border border-orange-200/40">
+                                <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={12} className="text-green-600 shrink-0" />
+                                  <span>CURSO COMPLETO</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
-                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
-                                  <span>TODOS OS EBOOKS E MATERIAIS DE APOIO</span>
+                                <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={12} className="text-green-600 shrink-0" />
+                                  <span>TODOS OS EBOOKS</span>
                                 </div>
-                                <div className="flex items-center gap-3 text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-tight">
-                                  <CheckCircle2 size={16} className="text-green-600 shrink-0" />
-                                  <span>GRUPO VIP + TREINAMENTOS ESPECIAIS</span>
+                                <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={12} className="text-green-600 shrink-0" />
+                                  <span>ACESSO VITALÍCIO</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-bold text-slate-700 uppercase tracking-tight">
+                                  <CheckCircle2 size={12} className="text-green-600 shrink-0" />
+                                  <span>GRUPO VIP PAIS</span>
                                 </div>
                               </div>
 
-                              <p className="text-sm sm:text-base leading-tight font-bold text-slate-700 max-w-xl">
-                                <span className="text-orange-600 uppercase">🚨 PARE DE TENTAR SOZINHO!</span> Adquira agora o treinamento COMPLETO para deixar um legado inabalável. Resultados comprovados com <span className="underline decoration-orange-400">metodologia direta e prática</span>.
-                              </p>
-                              
-                              <div className="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                              <div className="flex flex-col sm:flex-row items-center gap-3">
                                 <div className="flex flex-col">
-                                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Preço Especial Hoje</span>
-                                  <p className="text-3xl sm:text-4xl font-black text-orange-600 tracking-tighter leading-none">
+                                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">OFERTA ÚNICA</span>
+                                  <p className="text-2xl sm:text-3xl font-black text-orange-600 tracking-tighter leading-none">
                                     R$ {bump.price.toFixed(2).replace('.', ',')}
                                   </p>
                                 </div>
                                 
-                                <div className={`flex-1 w-full sm:w-auto h-14 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest transition-all ${
-                                  isSelected ? 'bg-orange-600 border-orange-600 text-white shadow-xl shadow-orange-200' : 'bg-white border-orange-200 text-orange-600 hover:bg-orange-100'
+                                <div className={`flex-1 w-full sm:w-auto h-11 rounded-lg border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all ${
+                                  isSelected ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-200' : 'bg-white border-orange-200 text-orange-600 hover:bg-orange-100'
                                 }`}>
-                                   {isSelected ? (
-                                     <>
-                                       <CheckCircle2 size={20} />
-                                       <span>SELECIONADO</span>
-                                     </>
-                                   ) : (
-                                     <span>ADICIONAR AO PEDIDO</span>
-                                   )}
+                                   {isSelected ? <CheckCircle2 size={16} /> : <span>ADICIONAR</span>}
+                                   <span>{isSelected ? 'SELECIONADO' : 'OFERTA LIBERADA'}</span>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          
-                          {/* Urgent Badge */}
-                          <div className="mt-6 pt-4 border-t border-orange-200/50 flex items-center gap-2">
-                             <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>
-                             <span className="text-[10px] font-black text-orange-700 uppercase tracking-widest">Oportunidade única disponível apenas nesta página</span>
                           </div>
                         </div>
                       );
