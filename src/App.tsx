@@ -159,20 +159,25 @@ function LandingPage() {
     setIsSubmitting(true);
     
     try {
-      // Integration with Google Forms
-      const googleFormData = new URLSearchParams();
-      googleFormData.append("entry.211052488", formData.name);
-      googleFormData.append("entry.792890973", formData.email);
-      googleFormData.append("entry.556642696", formData.whatsapp);
+      // Integração com Google Forms (Entry IDs fornecidos)
+      const enviarParaGoogleForms = (nome: string, email: string, whatsapp: string) => {
+        const googleFormData = new URLSearchParams();
+        googleFormData.append("entry.211052488", nome);
+        googleFormData.append("entry.792890973", email);
+        googleFormData.append("entry.556642696", whatsapp);
 
-      fetch("https://docs.google.com/forms/d/e/1FAIpQLSdMKupcpspqZk7YhDuJ-7bvthtW9oNnt1p9uoVZm2xBA3PN4A/formResponse", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: googleFormData
-      });
+        fetch("https://docs.google.com/forms/d/e/1FAIpQLSdMKupcpspqZk7YhDuJ-7bvthtW9oNnt1p9uoVZm2xBA3PN4A/formResponse", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: googleFormData
+        });
+      };
+
+      // Executa envio para Google Forms
+      enviarParaGoogleForms(formData.name, formData.email, formData.whatsapp);
 
       const path = 'leads';
       await addDoc(collection(db, path), {
