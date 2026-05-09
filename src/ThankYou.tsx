@@ -289,15 +289,22 @@ export default function ThankYou() {
                         <div 
                           key={bump.id}
                           onClick={() => toggleBump(bump.id)}
-                          className={`relative p-5 sm:p-6 rounded-[1.5rem] border-[3px] transition-all cursor-pointer group overflow-hidden mb-6 ${
+                          className={`relative p-5 sm:p-6 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
                             isSelected
                               ? 'bg-slate-900 border-orange-500 ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
                               : 'bg-slate-800 border-slate-700 shadow-xl hover:border-orange-500/50'
                           }`}
                         >
+                          {/* Floating Persuasion Badge */}
+                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20 animate-bounce sm:animate-none">
+                             <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap">
+                               COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200">ECONOMIZE R$ 458 SOMENTE AGORA</span>
+                             </span>
+                          </div>
+
                           {/* Sabri Suby Style Badge */}
-                          <div className="absolute top-0 right-0 bg-orange-600 text-white text-[9px] font-black px-4 py-1 rounded-bl-xl z-20 uppercase tracking-widest animate-pulse">
-                             Única Chance
+                          <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-3 py-1 rounded-bl-xl z-20 uppercase tracking-widest">
+                             Última Unidade
                           </div>
 
                           <div className="relative z-10">
