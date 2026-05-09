@@ -157,12 +157,6 @@ export default function ThankYou() {
         <ShieldCheck size={14} className="text-orange-500 animate-pulse" />
         <span>PASSO 2 DE 2: CONFIGURANDO SEU ACESSO</span>
       </div>
-      
-      {/* Status Bar */}
-      <div className="bg-green-600 text-white py-2 px-4 flex items-center justify-center gap-2 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] shadow-lg relative z-40">
-        <CheckCircle2 size={14} />
-        <span>Inscrição Confirmada</span>
-      </div>
 
       <div className="relative min-h-[100dvh] lg:min-h-0 pt-4 sm:pt-12 pb-12 sm:pb-20 bg-white">
         {/* Background Elements */}
@@ -170,13 +164,22 @@ export default function ThankYou() {
 
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl h-full flex flex-col justify-center relative z-10">
           <div className="text-center mb-6 sm:mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full text-[10px] sm:text-sm font-black uppercase tracking-widest mb-4 sm:mb-8 shadow-xl shadow-green-100"
+            >
+              <CheckCircle2 size={14} className="sm:w-5 sm:h-5" />
+              <span>VOCÊ GANHOU SEU PRESENTE</span>
+            </motion.div>
+
             <motion.h1
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
               className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-8 tracking-tighter leading-[0.9] uppercase"
             >
-              RECEBA SEU <br/> <span className="text-orange-600">LIVRO FÍSICO</span> EM CASA
+              NÃO FECHE <br/> <span className="text-orange-600">ESTA PÁGINA!</span>
             </motion.h1>
             <p className="text-xs sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-tight sm:leading-relaxed font-bold px-2 sm:px-0 uppercase tracking-tight">
               ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 underline decoration-orange-500 decoration-2 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
