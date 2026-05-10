@@ -160,24 +160,32 @@ function LandingPage() {
     
     try {
       // Integração Direta com Google Forms e Planilha
-      const sendToGoogleForms = (name: string, email: string, whatsapp: string) => {
+      const sendToGoogleForms = async (name: string, email: string, whatsapp: string) => {
+        const cleanWhatsapp = whatsapp.replace(/\D/g, '');
         const googleFormData = new URLSearchParams();
         googleFormData.append("entry.211052488", name);
         googleFormData.append("entry.792890973", email);
-        googleFormData.append("entry.556642696", whatsapp);
+        googleFormData.append("entry.556642696", cleanWhatsapp);
 
-        fetch("https://docs.google.com/forms/d/e/1FAIpQLSdMKupcpspqZk7YhDuJ-7bvthtW9oNnt1p9uoVZm2xBA3PN4A/formResponse", {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: googleFormData
-        }).catch(err => console.error("Erro ao enviar para Google Forms:", err));
+        try {
+          await fetch("https://docs.google.com/forms/d/e/1FAIpQLSdMKupcpspqZk7YhDuJ-7bvthtW9oNnt1p9uoVZm2xBA3PN4A/formResponse", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: googleFormData.toString(),
+            keepalive: true
+          });
+          // Pequena espera para garantir que o navegador processe a requisição antes do redirecionamento
+          await new Promise(resolve => setTimeout(resolve, 600));
+        } catch (err) {
+          console.error("Erro ao enviar para Google Forms:", err);
+        }
       };
 
-      // Dispara o envio
-      sendToGoogleForms(formData.name, formData.email, formData.whatsapp);
+      // Dispara o envio e aguarda o início do processo
+      await sendToGoogleForms(formData.name, formData.email, formData.whatsapp);
 
       const path = 'leads';
       await addDoc(collection(db, path), {

@@ -32,7 +32,16 @@ export default function ThankYou() {
     }
   });
   const [viewerIndex, setViewerIndex] = useState(0);
+  const [showDelayedContent, setShowDelayedContent] = useState(false);
   const viewerNumbers = [37, 23, 17, 45, 67];
+
+  useEffect(() => {
+    // Reveal hidden content after 220 seconds (3m 40s) as requested
+    const timer = setTimeout(() => {
+      setShowDelayedContent(true);
+    }, 220000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Garante que a página comece no topo ao carregar/atualizar
@@ -195,21 +204,15 @@ export default function ThankYou() {
           </div>
 
           {/* VSL Section - Portrait format, increased size for better prominence */}
-          <div className="max-w-[240px] sm:max-w-xl mx-auto mb-8 sm:mb-20 px-2 text-left">
+          <div className="max-w-[280px] sm:max-w-xl mx-auto mb-8 sm:mb-20 px-2 text-left">
             <div className="relative aspect-[9/16] bg-black rounded-[2rem] sm:rounded-[4rem] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.4)] overflow-hidden border-[6px] sm:border-[16px] border-slate-900 group">
-              {/* Fake Video Player Placeholder */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 sm:p-12 bg-gradient-to-b from-slate-900 to-black">
-                <div className="w-20 h-20 sm:w-32 sm:h-32 bg-orange-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-orange-500 group-hover:scale-110 transition-transform cursor-pointer">
-                  <Play size={40} className="sm:w-16 sm:h-16 ml-1" fill="currentColor" />
-                </div>
-                <p className="mt-6 sm:mt-12 text-white font-black uppercase tracking-widest text-[10px] sm:text-base animate-pulse">Clique para Iniciar</p>
-                <div className="absolute bottom-10 sm:bottom-16 left-0 w-full px-8 sm:px-12 flex items-center justify-between opacity-50">
-                   <div className="h-1.5 w-2/3 bg-white/20 rounded-full overflow-hidden">
-                      <div className="h-full bg-orange-600 w-1/4"></div>
-                   </div>
-                   <span className="text-[10px] sm:text-sm text-white font-mono font-bold">03:45</span>
-                </div>
-              </div>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/YZtez0yxJ_Y?autoplay=1&controls=0&modestbranding=1&rel=0"
+                title="Mini VSL"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
               
               {/* Decorative Frame */}
               <div className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 w-16 sm:w-32 h-4 sm:h-8 bg-slate-900 rounded-full"></div>
@@ -233,292 +236,300 @@ export default function ThankYou() {
               </span>
             </div>
           </div>
-          <span id="offers-section" className="text-orange-600 font-black uppercase text-base sm:text-5xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
-            APROVEITE TODOS PRODUTOS EM OFERTA
-          </span>
+          {showDelayedContent && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <span id="offers-section" className="text-orange-600 font-black uppercase text-base sm:text-5xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
+                APROVEITE TODOS PRODUTOS EM OFERTA
+              </span>
 
-          {/* Offer Section */}
-          <div className="bg-slate-50 rounded-[2.5rem] sm:rounded-[3rem] p-5 sm:p-16 border-2 border-slate-100 mb-10 sm:mb-16">
-            <div className="flex flex-col lg:flex-row gap-12">
-              <div className="flex-1">
-                <span className="inline-block text-orange-600 font-black text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-4 text-center w-full lg:text-left">FRETE GRÁTIS PARA TODO BRASIL</span>
-                
-                {/* Physical Book Choice Card */}
-                <div 
-                  onClick={() => toggleBump(physicalBook.id)}
-                  className={`p-4 sm:p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group mb-6 sm:mb-8 ${
-                    selectedBumps.includes(physicalBook.id) 
-                    ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
-                    : 'bg-white border-slate-100 hover:border-slate-300'
-                  }`}
-                >
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
-                      selectedBumps.includes(physicalBook.id) ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
-                    }`}>
-                      {physicalBook.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
-                        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {physicalBook.oldPrice.toFixed(2).replace('.', ',')}</span>
-                        <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600">Por Apenas R$ {physicalBook.price.toFixed(2).replace('.', ',')}</p>
-                      </div>
-                      <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{physicalBook.title}</p>
-                      <p className="text-[11px] sm:text-xs text-slate-500 leading-tight font-medium max-w-sm">{physicalBook.description}</p>
-                    </div>
-                  </div>
-                  <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ${
-                    selectedBumps.includes(physicalBook.id) ? 'bg-orange-600 border-orange-600 text-white' : 'border-slate-200'
-                  }`}>
-                     {selectedBumps.includes(physicalBook.id) && <CheckCircle2 size={16} />}
-                  </div>
-                </div>
-
-                {/* Order Bumps Header */}
-                <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 mb-4 sm:mb-6 flex items-center gap-2">
-                  <Plus size={14} /> <span className="line-clamp-1">CONDIÇÃO ESPECIAL COM SUPERDESCONTO</span>
-                </h3>
-
-                <div className="space-y-3 sm:space-y-4">
-                  {bumps.map((bump) => {
-                    const isCombo = bump.id === 'combo';
-                    const isSelected = selectedBumps.includes(bump.id);
+              {/* Offer Section */}
+              <div className="bg-slate-50 rounded-[2.5rem] sm:rounded-[3rem] p-5 sm:p-16 border-2 border-slate-100 mb-10 sm:mb-16">
+                <div className="flex flex-col lg:flex-row gap-12">
+                  <div className="flex-1">
+                    <span className="inline-block text-orange-600 font-black text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-4 text-center w-full lg:text-left">FRETE GRÁTIS PARA TODO BRASIL</span>
                     
-                    if (isCombo) {
-                      return (
-                        <div 
-                          key={bump.id}
-                          onClick={() => toggleBump(bump.id)}
-                          className={`relative p-5 sm:p-8 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
-                            isSelected
-                              ? 'bg-slate-900 border-orange-500 ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
-                              : 'bg-slate-800 border-slate-700 shadow-xl hover:border-orange-500/50'
-                          }`}
-                        >
-                          {/* Floating Persuasion Badge */}
-                          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20">
-                             <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap text-center">
-                               COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200">ECONOMIZE R$ 458 SOMENTE AGORA</span>
-                             </span>
+                    {/* Physical Book Choice Card */}
+                    <div 
+                      onClick={() => toggleBump(physicalBook.id)}
+                      className={`p-4 sm:p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group mb-6 sm:mb-8 ${
+                        selectedBumps.includes(physicalBook.id) 
+                        ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
+                        : 'bg-white border-slate-100 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
+                          selectedBumps.includes(physicalBook.id) ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
+                        }`}>
+                          {physicalBook.icon}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
+                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {physicalBook.oldPrice.toFixed(2).replace('.', ',')}</span>
+                            <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600">Por Apenas R$ {physicalBook.price.toFixed(2).replace('.', ',')}</p>
                           </div>
+                          <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{physicalBook.title}</p>
+                          <p className="text-[11px] sm:text-xs text-slate-500 leading-tight font-medium max-w-sm">{physicalBook.description}</p>
+                        </div>
+                      </div>
+                      <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ${
+                        selectedBumps.includes(physicalBook.id) ? 'bg-orange-600 border-orange-600 text-white' : 'border-slate-200'
+                      }`}>
+                         {selectedBumps.includes(physicalBook.id) && <CheckCircle2 size={16} />}
+                      </div>
+                    </div>
 
-                          {/* Sabri Suby Style Badge */}
-                          <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-3 py-1 rounded-bl-xl z-20 uppercase tracking-widest">
-                             Última Unidade
-                          </div>
+                    {/* Order Bumps Header */}
+                    <h3 className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-400 mb-4 sm:mb-6 flex items-center gap-2">
+                      <Plus size={14} /> <span className="line-clamp-1">CONDIÇÃO ESPECIAL COM SUPERDESCONTO</span>
+                    </h3>
 
-                          <div className="relative z-10">
-                            <div className="flex items-center gap-3 mb-3">
-                              <div className={`h-12 w-12 shrink-0 rounded-lg flex items-center justify-center shadow-inner ${
-                                isSelected ? 'bg-orange-600 text-white' : 'bg-slate-700 text-slate-300'
-                              }`}>
-                                <Play size={24} fill="currentColor" />
+                    <div className="space-y-3 sm:space-y-4">
+                      {bumps.map((bump) => {
+                        const isCombo = bump.id === 'combo';
+                        const isSelected = selectedBumps.includes(bump.id);
+                        
+                        if (isCombo) {
+                          return (
+                            <div 
+                              key={bump.id}
+                              onClick={() => toggleBump(bump.id)}
+                              className={`relative p-5 sm:p-8 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
+                                isSelected
+                                  ? 'bg-slate-900 border-orange-500 ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
+                                  : 'bg-slate-800 border-slate-700 shadow-xl hover:border-orange-500/50'
+                              }`}
+                            >
+                              {/* Floating Persuasion Badge */}
+                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20">
+                                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap text-center">
+                                   COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200">ECONOMIZE R$ 458 SOMENTE AGORA</span>
+                                 </span>
                               </div>
-                              <div>
-                                <span className="block text-xs font-black text-orange-500 uppercase tracking-[0.2em] leading-none mb-1">Oferta Irrecusável</span>
-                                <h4 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tighter leading-none">
-                                  {bump.title}
-                                </h4>
-                              </div>
-                            </div>
 
-                            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-tight mb-4 border-l-2 border-orange-500 pl-3">
-                              <span className="text-white font-bold">PARE DE TENTAR SOZINHO!</span> A maioria dos pais falha porque não tem um mapa. Este é o seu arsenal completo para <span className="text-white font-bold underline decoration-orange-500">blindar sua família</span> e deixar um legado. <span className="text-orange-400 font-bold">Você economizou R$ 458,00 agora.</span>
-                            </p>
-
-                            <div className="grid grid-cols-2 gap-2 mb-4">
-                              <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
-                                <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
-                                <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Ebooks + Curso</span>
+                              {/* Sabri Suby Style Badge */}
+                              <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-3 py-1 rounded-bl-xl z-20 uppercase tracking-widest">
+                                 Última Unidade
                               </div>
-                              <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
-                                <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
-                                <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Grupo VIP Pais</span>
-                              </div>
-                            </div>
 
-                            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4">
-                              <div className="flex flex-col">
-                                <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest line-through">De R$ 655,00</span>
-                                <p className="text-4xl sm:text-5xl font-black text-green-500 tracking-tighter leading-none">
-                                  R$ {bump.price.toFixed(2).replace('.', ',')}
+                              <div className="relative z-10">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className={`h-12 w-12 shrink-0 rounded-lg flex items-center justify-center shadow-inner ${
+                                    isSelected ? 'bg-orange-600 text-white' : 'bg-slate-700 text-slate-300'
+                                  }`}>
+                                    <Play size={24} fill="currentColor" />
+                                  </div>
+                                  <div>
+                                    <span className="block text-xs font-black text-orange-500 uppercase tracking-[0.2em] leading-none mb-1">Oferta Irrecusável</span>
+                                    <h4 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tighter leading-none">
+                                      {bump.title}
+                                    </h4>
+                                  </div>
+                                </div>
+
+                                <p className="text-xs sm:text-sm text-slate-300 font-medium leading-tight mb-4 border-l-2 border-orange-500 pl-3">
+                                  <span className="text-white font-bold">PARE DE TENTAR SOZINHO!</span> A maioria dos pais falha porque não tem um mapa. Este é o seu arsenal completo para <span className="text-white font-bold underline decoration-orange-500">blindar sua família</span> e deixar um legado. <span className="text-orange-400 font-bold">Você economizou R$ 458,00 agora.</span>
                                 </p>
+
+                                <div className="grid grid-cols-2 gap-2 mb-4">
+                                  <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
+                                    <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
+                                    <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Ebooks + Curso</span>
+                                  </div>
+                                  <div className="bg-slate-950/50 p-2 rounded-lg border border-slate-700/50 flex items-center gap-2">
+                                    <CheckCircle2 size={14} className="text-orange-500 shrink-0" />
+                                    <span className="text-[10px] sm:text-xs font-bold text-slate-200 uppercase tracking-tight">Grupo VIP Pais</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4">
+                                  <div className="flex flex-col">
+                                    <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest line-through">De R$ 655,00</span>
+                                    <p className="text-4xl sm:text-5xl font-black text-green-500 tracking-tighter leading-none">
+                                      R$ {bump.price.toFixed(2).replace('.', ',')}
+                                    </p>
+                                  </div>
+                                  
+                                  <div className={`h-14 flex-1 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs sm:text-sm transition-all bg-orange-600 border-orange-600 text-white shadow-lg ${
+                                    isSelected 
+                                      ? 'shadow-orange-500/40 ring-4 ring-orange-500/20' 
+                                      : 'hover:bg-orange-700 hover:border-orange-700'
+                                  }`}>
+                                     {isSelected ? <CheckCircle2 size={22} /> : null}
+                                     <span>{isSelected ? 'SELECIONADO' : 'ADICIONAR AGORA'}</span>
+                                  </div>
+                                </div>
                               </div>
                               
-                              <div className={`h-14 flex-1 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs sm:text-sm transition-all bg-orange-600 border-orange-600 text-white shadow-lg ${
-                                isSelected 
-                                  ? 'shadow-orange-500/40 ring-4 ring-orange-500/20' 
-                                  : 'hover:bg-orange-700 hover:border-orange-700'
-                              }`}>
-                                 {isSelected ? <CheckCircle2 size={22} /> : null}
-                                 <span>{isSelected ? 'SELECIONADO' : 'ADICIONAR AGORA'}</span>
+                              {/* Warning text */}
+                              <div className="mt-4 pt-3 border-t border-slate-700/50">
+                                 <p className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] text-center italic">
+                                   *Não disponível em nenhum outro lugar por este valor
+                                 </p>
                               </div>
                             </div>
-                          </div>
-                          
-                          {/* Warning text */}
-                          <div className="mt-4 pt-3 border-t border-slate-700/50">
-                             <p className="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] text-center italic">
-                               *Não disponível em nenhum outro lugar por este valor
-                             </p>
-                          </div>
-                        </div>
-                      );
-                    }
+                          );
+                        }
 
 
-                    return (
-                      <div 
-                        key={bump.id}
-                        onClick={() => toggleBump(bump.id)}
-                        className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all cursor-pointer flex items-center justify-between group ${
-                          isSelected
-                            ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
-                            : 'bg-white border-slate-100 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-start gap-3 sm:gap-4 flex-1">
-                          <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
-                            isSelected ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
-                          }`}>
-                            {bump.icon}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
-                              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
-                              <p className={`text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600`}>Por Apenas + R$ {bump.price.toFixed(2).replace('.', ',')}</p>
+                        return (
+                          <div 
+                            key={bump.id}
+                            onClick={() => toggleBump(bump.id)}
+                            className={`relative p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-2 transition-all cursor-pointer flex items-center justify-between group ${
+                              isSelected
+                                ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
+                                : 'bg-white border-slate-100 hover:border-slate-300'
+                            }`}
+                          >
+                            <div className="flex items-start gap-3 sm:gap-4 flex-1">
+                              <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
+                                isSelected ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
+                              }`}>
+                                {bump.icon}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
+                                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {bump.oldPrice.toFixed(2).replace('.', ',')}</span>
+                                  <p className={`text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600`}>Por Apenas + R$ {bump.price.toFixed(2).replace('.', ',')}</p>
+                                </div>
+                                <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{bump.title}</p>
+                                {bump.description && (
+                                  <p className={`text-[11px] sm:text-xs leading-tight font-medium max-w-sm text-slate-500`}>
+                                    {bump.description}
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                            <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{bump.title}</p>
-                            {bump.description && (
-                              <p className={`text-[11px] sm:text-xs leading-tight font-medium max-w-sm text-slate-500`}>
-                                {bump.description}
-                              </p>
-                            )}
+                            <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ml-4 ${
+                              isSelected ? 'bg-orange-600 border-orange-600 text-white' : 'border-slate-200'
+                            }`}>
+                               {isSelected && <CheckCircle2 size={16} />}
+                            </div>
                           </div>
-                        </div>
-                        <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ml-4 ${
-                          isSelected ? 'bg-orange-600 border-orange-600 text-white' : 'border-slate-200'
-                        }`}>
-                           {isSelected && <CheckCircle2 size={16} />}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="lg:w-96 shrink-0 mt-8 lg:mt-0">
-                <div className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 lg:sticky lg:top-24">
-                  <div className="flex items-center justify-center gap-2 mb-4 bg-orange-50 py-2 rounded-xl border border-orange-100">
-                    <ShieldCheck size={16} className="text-orange-600" />
-                    <span className="text-[10px] sm:text-xs font-black text-orange-700 uppercase tracking-widest">GARANTIA DE 7 DIAS ABSOLUTA</span>
-                  </div>
-                  <img 
-                    src="https://i.postimg.cc/zvkhpzsN/capa-Paternidade-Proposito-By-Wagner-Ferraz.png" 
-                    alt="Livro Físico" 
-                    className="w-full h-auto rounded-xl shadow-lg mb-6 sm:mb-8"
-                    referrerPolicy="no-referrer"
-                  />
-                  
-                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                     {selectedBumps.length === 0 && (
-                       <p className="text-xs font-bold text-slate-400 italic text-center py-4">Nenhum item selecionado</p>
-                     )}
-                     <div className="space-y-2">
-                       {allItems.filter(b => selectedBumps.includes(b.id)).map(b => (
-                         <motion.div 
-                           key={b.id} 
-                           initial={{ opacity: 0, x: -10 }}
-                           animate={{ opacity: 1, x: 0 }}
-                           exit={{ opacity: 0, x: 10 }}
-                           className="flex justify-between items-center text-sm font-bold text-orange-600"
-                         >
-                            <span className="max-w-[200px] break-words line-clamp-1">+ {getShortTitle(b.title)}</span>
-                            <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
-                         </motion.div>
-                       ))}
-                     </div>
-                     {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
-                     <div className="flex flex-col gap-1 py-1">
-                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
-                        <motion.div 
-                          key={totalPrice}
-                          initial={{ scale: 1.1, color: "#16a34a" }}
-                          animate={{ scale: 1, color: "#16a34a" }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                          className="text-4xl sm:text-5xl font-black tracking-tighter text-green-600"
-                        >
-                          R$ {totalPrice.toFixed(2).replace('.', ',')}
-                        </motion.div>
-                     </div>
-                  </div>
-
-                  <button 
-                    onClick={handleWhatsAppOrder}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center group cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3 mb-1">
-                      <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
-                      <span className="text-xl sm:text-2xl uppercase tracking-tighter">GARANTIR MEU PEDIDO</span>
+                        );
+                      })}
                     </div>
-                    <span className="text-xs sm:text-sm opacity-80 font-bold uppercase tracking-widest bg-orange-700/50 px-4 py-1 rounded-full">
-                      Total: R$ {totalPrice.toFixed(2).replace('.', ',')}
-                    </span>
-                  </button>
-                  
-                  <p className="mt-4 text-[10px] text-slate-400 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                    <Lock size={12} /> Pagamento 100% Seguro
-                  </p>
+                  </div>
+
+                  <div className="lg:w-96 shrink-0 mt-8 lg:mt-0">
+                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 lg:sticky lg:top-24">
+                      <div className="flex items-center justify-center gap-2 mb-4 bg-orange-50 py-2 rounded-xl border border-orange-100">
+                        <ShieldCheck size={16} className="text-orange-600" />
+                        <span className="text-[10px] sm:text-xs font-black text-orange-700 uppercase tracking-widest">GARANTIA DE 7 DIAS ABSOLUTA</span>
+                      </div>
+                      <img 
+                        src="https://i.postimg.cc/zvkhpzsN/capa-Paternidade-Proposito-By-Wagner-Ferraz.png" 
+                        alt="Livro Físico" 
+                        className="w-full h-auto rounded-xl shadow-lg mb-6 sm:mb-8"
+                        referrerPolicy="no-referrer"
+                      />
+                      
+                      <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                         {selectedBumps.length === 0 && (
+                           <p className="text-xs font-bold text-slate-400 italic text-center py-4">Nenhum item selecionado</p>
+                         )}
+                         <div className="space-y-2">
+                           {allItems.filter(b => selectedBumps.includes(b.id)).map(b => (
+                             <motion.div 
+                               key={b.id} 
+                               initial={{ opacity: 0, x: -10 }}
+                               animate={{ opacity: 1, x: 0 }}
+                               exit={{ opacity: 0, x: 10 }}
+                               className="flex justify-between items-center text-sm font-bold text-orange-600"
+                             >
+                                <span className="max-w-[200px] break-words line-clamp-1">+ {getShortTitle(b.title)}</span>
+                                <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
+                             </motion.div>
+                           ))}
+                         </div>
+                         {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
+                         <div className="flex flex-col gap-1 py-1">
+                            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
+                            <motion.div 
+                              key={totalPrice}
+                              initial={{ scale: 1.1, color: "#16a34a" }}
+                              animate={{ scale: 1, color: "#16a34a" }}
+                              transition={{ type: "spring", stiffness: 300 }}
+                              className="text-4xl sm:text-5xl font-black tracking-tighter text-green-600"
+                            >
+                              R$ {totalPrice.toFixed(2).replace('.', ',')}
+                            </motion.div>
+                         </div>
+                      </div>
+
+                      <button 
+                        onClick={handleWhatsAppOrder}
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-3 mb-1">
+                          <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
+                          <span className="text-xl sm:text-2xl uppercase tracking-tighter">GARANTIR MEU PEDIDO</span>
+                        </div>
+                        <span className="text-xs sm:text-sm opacity-80 font-bold uppercase tracking-widest bg-orange-700/50 px-4 py-1 rounded-full">
+                          Total: R$ {totalPrice.toFixed(2).replace('.', ',')}
+                        </span>
+                      </button>
+                      
+                      <p className="mt-4 text-[10px] text-slate-400 text-center font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                        <Lock size={12} /> Pagamento 100% Seguro
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="text-center pt-10 sm:pt-16 border-t border-slate-100">
-             <motion.div
-               initial={{ scale: 0.95, opacity: 0 }}
-               whileInView={{ scale: 1, opacity: 1 }}
-               viewport={{ once: true }}
-               className="max-w-xl mx-auto"
-             >
-                <button 
-                  onClick={handleDownloadEbook}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 sm:py-8 px-6 sm:px-8 rounded-2xl sm:rounded-[2.5rem] transition-all shadow-[0_20px_50px_-15px_rgba(22,163,74,0.4)] hover:-translate-y-2 active:scale-95 flex flex-col items-center justify-center gap-1 sm:gap-2 group text-base sm:text-2xl uppercase tracking-tighter"
+              <div className="text-center pt-10 sm:pt-16 border-t border-slate-100">
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="max-w-xl mx-auto"
                 >
-                  <div className="flex items-center gap-2 sm:gap-4">
-                    <Download className="w-5 h-5 sm:w-8 sm:h-8 group-hover:translate-y-1 transition-transform" />
-                    <span>BAIXAR EBOOK GRATUITO</span>
-                  </div>
-                  <span className="text-[9px] sm:text-sm font-bold opacity-90 tracking-[0.1em] sm:tracking-[0.2em] line-clamp-1">SE PREFERIR, APENAS BAIXE SEU BRINDE</span>
-                </button>
-             </motion.div>
-          </div>
+                  <button 
+                    onClick={handleDownloadEbook}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 sm:py-8 px-6 sm:px-8 rounded-2xl sm:rounded-[2.5rem] transition-all shadow-[0_20px_50px_-15px_rgba(22,163,74,0.4)] hover:-translate-y-2 active:scale-95 flex flex-col items-center justify-center gap-1 sm:gap-2 group text-base sm:text-2xl uppercase tracking-tighter"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <Download className="w-5 h-5 sm:w-8 sm:h-8 group-hover:translate-y-1 transition-transform" />
+                      <span>BAIXAR EBOOK GRATUITO</span>
+                    </div>
+                    <span className="text-[9px] sm:text-sm font-bold opacity-90 tracking-[0.1em] sm:tracking-[0.2em] line-clamp-1">SE PREFERIR, APENAS BAIXE SEU BRINDE</span>
+                  </button>
+                </motion.div>
+              </div>
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-10 mt-10 border-t border-slate-100"
-          >
-            <div className="flex gap-3">
-              <a href="https://www.instagram.com/wagnerferrazoficial" target="_blank" rel="noopener noreferrer" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all border border-slate-100">
-                <Instagram size={18} />
-              </a>
-              <a href="https://www.youtube.com/@wagnerferrazoficial" target="_blank" rel="noopener noreferrer" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all border border-slate-100">
-                <Youtube size={18} />
-              </a>
-            </div>
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-10 mt-10 border-t border-slate-100"
+              >
+                <div className="flex gap-3">
+                  <a href="https://www.instagram.com/wagnerferrazoficial" target="_blank" rel="noopener noreferrer" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all border border-slate-100">
+                    <Instagram size={18} />
+                  </a>
+                  <a href="https://www.youtube.com/@wagnerferrazoficial" target="_blank" rel="noopener noreferrer" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:text-orange-600 transition-all border border-slate-100">
+                    <Youtube size={18} />
+                  </a>
+                </div>
 
-            <div className="flex items-center gap-2 text-[9px] font-black text-slate-300 uppercase tracking-widest text-center">
-              <Lock size={10} />
-              <span className="hidden xs:inline">Conexão Segura e Criptografada</span>
-              <span className="xs:hidden">Segurança Total</span>
-            </div>
+                <div className="flex items-center gap-2 text-[9px] font-black text-slate-300 uppercase tracking-widest text-center">
+                  <Lock size={10} />
+                  <span className="hidden xs:inline">Conexão Segura e Criptografada</span>
+                  <span className="xs:hidden">Segurança Total</span>
+                </div>
 
-            <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">
-              Wagner Ferraz Oficial © 2026
-            </p>
-          </motion.div>
+                <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">
+                  Wagner Ferraz Oficial © 2026
+                </p>
+              </motion.div>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
