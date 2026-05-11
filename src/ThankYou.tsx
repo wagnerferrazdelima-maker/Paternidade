@@ -92,25 +92,29 @@ export default function ThankYou() {
         width: '100%',
         videoId: 'YZtez0yxJ_Y',
         playerVars: {
-          autoplay: 1,
+          autoplay: 0,
           controls: 0,
           modestbranding: 1,
           rel: 0,
           showinfo: 0,
           iv_load_policy: 3,
-          mute: 1,
+          mute: 0,
           start: Math.floor(elapsedSeconds)
         },
         events: {
           onReady: (event: any) => {
-            // Video starts muted and playing by default via playerVars
+            event.target.setVolume(100);
+            // Video ready - not autoplaying to ensure sound works on first interaction
             if (elapsedSeconds >= vslDuration) {
               setShowDelayedContent(true);
             }
           },
           onStateChange: (event: any) => {
             // 1 = playing, 2 = paused
-            if (event.data === 1) setIsPlaying(true);
+            if (event.data === 1) {
+              setIsPlaying(true);
+              setIsMuted(false);
+            }
             else if (event.data === 2) setIsPlaying(false);
           }
         }
@@ -346,24 +350,13 @@ export default function ThankYou() {
 
               <div id="vsl-player" className="absolute inset-0 w-full h-full pointer-events-none"></div>
 
-              {/* Fake Internal UI Controls (Retention Hacks) */}
+              {/* Fake Internal UI Controls (Retention Hacks) - Removed PDF and Volume as requested */}
               <div className="absolute top-2 left-0 w-full z-40 pointer-events-none flex items-center justify-center px-4">
-                 <div className="flex items-center">
-                    <span className="text-[7px] sm:text-[10px] font-black text-orange-500 bg-black/90 px-4 py-1 rounded-full border border-orange-500/30 uppercase tracking-[0.2em] shadow-2xl shadow-black/50 whitespace-nowrap">
-                      PDF GRÁTIS PARA PAIS
-                    </span>
-                 </div>
-
-                 <div className="absolute top-0 right-2 sm:right-4 flex items-center gap-2">
-                    <div className="h-6 w-6 sm:h-8 sm:w-8 bg-black/40 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/5">
-                       {isMuted ? <VolumeX size={10} className="text-white/60 sm:w-4 sm:h-4" /> : <Volume2 size={10} className="text-white/60 sm:w-4 sm:h-4" />}
-                    </div>
-                 </div>
               </div>
 
               {/* Play/Pause/Mute Interaction Area */}
               <div 
-                className="absolute inset-0 z-[60] cursor-pointer group/vcenter"
+                className="absolute inset-0 z-[60] cursor-pointer group/vcenter flex items-center justify-center p-6"
                 onClick={handleVslInteraction}
               >
                 {/* Subtle pause hint when playing */}
