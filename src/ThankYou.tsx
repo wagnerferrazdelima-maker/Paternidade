@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   CheckCircle2, 
   Download, 
@@ -11,8 +11,10 @@ import {
   ShieldCheck,
   Lock,
   Play,
+  Pause,
   Truck,
   Volume2,
+  VolumeX,
   Users,
   Video,
   ShoppingBag,
@@ -20,6 +22,13 @@ import {
   Plus,
   ChevronDown
 } from 'lucide-react';
+
+declare global {
+  interface Window {
+    onYouTubeIframeAPIReady: () => void;
+    YT: any;
+  }
+}
 
 export default function ThankYou() {
   const [selectedBumps, setSelectedBumps] = useState<string[]>(() => {
@@ -33,15 +42,130 @@ export default function ThankYou() {
   });
   const [viewerIndex, setViewerIndex] = useState(0);
   const [showDelayedContent, setShowDelayedContent] = useState(false);
+  const [vslProgress, setVslProgress] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const vslDuration = 220; // seconds
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const viewerNumbers = [37, 23, 17, 45, 67];
 
+  // YouTube Player Ref
+  const playerRef = useRef<any>(null);
+
+  // Clear previous progress once on mount to start from zero as requested
   useEffect(() => {
-    // Reveal hidden content after 220 seconds (3m 40s) as requested
-    const timer = setTimeout(() => {
-      setShowDelayedContent(true);
-    }, 220000);
-    return () => clearTimeout(timer);
+    localStorage.removeItem('vsl_elapsed_seconds');
   }, []);
+
+  // Load YouTube API
+  useEffect(() => {
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+      window.onYouTubeIframeAPIReady = () => {
+        createPlayer();
+      };
+    } else {
+      createPlayer();
+    }
+
+    function createPlayer() {
+      playerRef.current = new window.YT.Player('vsl-player', {
+        height: '100%',
+        width: '100%',
+        videoId: 'YZtez0yxJ_Y',
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+          iv_load_policy: 3,
+          mute: 1,
+          start: Math.floor(elapsedSeconds)
+        },
+        events: {
+          onReady: (event: any) => {
+            // Video starts muted and playing by default via playerVars
+            if (elapsedSeconds >= vslDuration) {
+              setShowDelayedContent(true);
+            }
+          },
+          onStateChange: (event: any) => {
+            // 1 = playing, 2 = paused
+            if (event.data === 1) setIsPlaying(true);
+            else if (event.data === 2) setIsPlaying(false);
+          }
+        }
+      });
+    }
+
+    return () => {
+      // Clean up if needed
+    };
+  }, []);
+
+  // Sync Progress and Disclosure
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setElapsedSeconds(prev => {
+          const next = prev + 0.1;
+          localStorage.setItem('vsl_elapsed_seconds', next.toString());
+          
+          // Progressive reveal check
+          if (next >= vslDuration) {
+            setShowDelayedContent(true);
+          }
+          
+          return next;
+        });
+      }, 100);
+    }
+
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  // Handle Play/Pause and Unmute
+  const handleVslInteraction = () => {
+    if (!playerRef.current) return;
+
+    if (isMuted) {
+      playerRef.current.unMute();
+      setIsMuted(false);
+      playerRef.current.playVideo();
+      setIsPlaying(true);
+    } else {
+      if (isPlaying) {
+        playerRef.current.pauseVideo();
+        setIsPlaying(false);
+      } else {
+        playerRef.current.playVideo();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  // UI Progress Calculation
+  useEffect(() => {
+    const percentTime = elapsedSeconds / vslDuration;
+    let simulatedProgress = 0;
+    
+    if (percentTime < 0.2) {
+      simulatedProgress = (percentTime / 0.2) * 40;
+    } else if (percentTime < 0.7) {
+      simulatedProgress = 40 + ((percentTime - 0.2) / 0.5) * 45;
+    } else {
+      simulatedProgress = 85 + ((percentTime - 0.7) / 0.3) * 14;
+    }
+    
+    setVslProgress(Math.min(simulatedProgress, 100));
+  }, [elapsedSeconds]);
 
   useEffect(() => {
     // Garante que a página comece no topo ao carregar/atualizar
@@ -194,46 +318,93 @@ export default function ThankYou() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 sm:mb-8 tracking-tighter leading-[0.9] uppercase"
+              className="text-[28px] xs:text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black mb-4 sm:mb-8 tracking-tighter leading-[0.95] uppercase sm:leading-[0.9]"
             >
               RECEBA SEU <br/> <span className="text-orange-600">LIVRO FÍSICO</span> EM CASA
             </motion.h1>
-            <p className="text-xs sm:text-2xl text-slate-500 max-w-3xl mx-auto leading-tight sm:leading-relaxed font-bold px-2 sm:px-0 uppercase tracking-tight">
+            <p className="text-[13px] sm:text-xl md:text-2xl lg:text-3xl text-slate-500 max-w-4xl mx-auto leading-tight sm:leading-relaxed font-bold px-2 sm:px-0 uppercase tracking-tight">
               ASSISTA AO VÍDEO ABAIXO PARA SABER COMO RECEBER O SEU <span className="text-slate-900 underline decoration-orange-500 decoration-2 sm:decoration-4">LIVRO FÍSICO EM CASA</span> COM FRETE GRÁTIS.
             </p>
           </div>
 
-          {/* VSL Section - Portrait format, increased size for better prominence */}
-          <div className="max-w-[280px] sm:max-w-xl mx-auto mb-8 sm:mb-20 px-2 text-left">
-            <div className="relative aspect-[9/16] bg-black rounded-[2rem] sm:rounded-[4rem] shadow-[0_50px_120px_-20px_rgba(0,0,0,0.4)] overflow-hidden border-[6px] sm:border-[16px] border-slate-900 group">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/YZtez0yxJ_Y?autoplay=1&controls=0&modestbranding=1&rel=0"
-                title="Mini VSL"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
+          {/* VSL Section - Premium Smartphone Frame with Real-time Progress Bar */}
+          <div className="w-full max-w-[340px] sm:max-w-xl mx-auto mb-8 sm:mb-20 px-4 sm:px-2 text-left">
+            <div className="relative aspect-[9/16] bg-black rounded-[2.5rem] sm:rounded-[4.5rem] shadow-[0_40px_100px_-20px_rgba(249,115,22,0.3)] sm:shadow-[0_60px_150px_-30px_rgba(249,115,22,0.3)] overflow-hidden border-[6px] sm:border-[20px] border-slate-900 ring-2 sm:ring-8 ring-slate-800 group">
               
-              {/* Decorative Frame */}
-              <div className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 w-16 sm:w-32 h-4 sm:h-8 bg-slate-900 rounded-full"></div>
+              {/* Glossy Overlay Reflection */}
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-transparent z-30 opacity-40"></div>
+
+              <div id="vsl-player" className="absolute inset-0 w-full h-full pointer-events-none"></div>
+
+              {/* Fake Internal UI Controls (Retention Hacks) */}
+              <div className="absolute top-0 left-0 w-full p-4 sm:p-8 flex items-center justify-between z-40 pointer-events-none">
+                 <div className="bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></div>
+                    <span className="text-[8px] sm:text-[10px] font-black text-white/90 uppercase tracking-widest">LIVE</span>
+                 </div>
+                 <div className="flex items-center gap-2">
+                    <div className="h-6 w-6 sm:h-9 sm:w-9 bg-black/40 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/10">
+                       {isMuted ? <VolumeX size={12} className="text-white/80 sm:w-5 sm:h-5" /> : <Volume2 size={12} className="text-white/80 sm:w-5 sm:h-5" />}
+                    </div>
+                 </div>
+              </div>
+
+              {/* Play/Pause/Mute Interaction Area */}
+              <div 
+                className="absolute inset-0 z-[60] cursor-pointer group/vcenter"
+                onClick={handleVslInteraction}
+              >
+                {/* Subtle pause hint when playing */}
+                {!isMuted && isPlaying && (
+                  <div className="absolute inset-0 opacity-0 group-hover/vcenter:opacity-100 transition-opacity flex items-center justify-center bg-black/10">
+                     <div className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/20">
+                        <Pause size={40} className="text-white" fill="currentColor" />
+                     </div>
+                  </div>
+                )}
+              </div>
+
+              {/* VTurb Style Progress Bar System */}
+              <div className="absolute bottom-0 left-0 w-full z-50">
+                {/* Thin, high-contrast progress tracker */}
+                <div className="w-full h-1 sm:h-2 bg-black/40 overflow-hidden">
+                  <div 
+                     style={{ width: `${vslProgress}%` }}
+                     className="h-full bg-orange-600 relative transition-all duration-300 shadow-[0_0_10px_rgba(234,88,12,0.8)]"
+                  >
+                    {/* Glossy lead edge for VTurb look */}
+                    <div className="absolute right-0 top-0 h-full w-2 bg-white/40 blur-[1px]"></div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-center gap-3">
-              <div className="flex -space-x-1.5 sm:-space-x-2 shrink-0">
-                 {[
-                   "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
-                   "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
-                   "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
-                   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80"
-                 ].map((url, i) => (
-                   <div key={i} className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-slate-100 border-[1.5px] sm:border-2 border-white flex items-center justify-center overflow-hidden shadow-sm">
-                     <img src={url} alt="Person" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                   </div>
-                 ))}
+            <div className="mt-8 flex flex-col items-center gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-1.5 sm:-space-x-2 shrink-0">
+                   {[
+                     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
+                     "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
+                     "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80",
+                     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=100&h=100&q=80"
+                   ].map((url, i) => (
+                     <div key={i} className="h-6 w-6 sm:h-9 sm:w-9 rounded-full bg-slate-100 border-[1.5px] sm:border-2 border-white flex items-center justify-center overflow-hidden shadow-sm">
+                       <img src={url} alt="Person" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                     </div>
+                   ))}
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-900">
+                      {viewerNumbers[viewerIndex]} pessoas assistindo agora
+                    </span>
+                  </div>
+                  <span className="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Tempo estimado para liberar o bônus: {Math.max(0, Math.floor((vslDuration * (1 - vslProgress/100)) / 60))}:{(Math.max(0, Math.floor(vslDuration * (1 - vslProgress/100) % 60))).toString().padStart(2, '0')}
+                  </span>
+                </div>
               </div>
-              <span className="text-[8px] sm:text-xs font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">
-                {viewerNumbers[viewerIndex]} assistindo agora
-              </span>
             </div>
           </div>
           {showDelayedContent && (
@@ -242,38 +413,38 @@ export default function ThankYou() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <span id="offers-section" className="text-orange-600 font-black uppercase text-base sm:text-5xl tracking-tighter text-center whitespace-nowrap block w-full mb-8 sm:mb-12 px-4">
+              <span id="offers-section" className="text-orange-600 font-black uppercase text-2xl sm:text-5xl tracking-tighter text-center block w-full mb-8 sm:mb-12 px-4 leading-none">
                 APROVEITE TODOS PRODUTOS EM OFERTA
               </span>
 
               {/* Offer Section */}
-              <div className="bg-slate-50 rounded-[2.5rem] sm:rounded-[3rem] p-5 sm:p-16 border-2 border-slate-100 mb-10 sm:mb-16">
-                <div className="flex flex-col lg:flex-row gap-12">
+              <div className="bg-slate-50 rounded-[1.5rem] sm:rounded-[3rem] p-4 sm:p-10 lg:p-16 border-2 border-slate-100 mb-10 sm:mb-16">
+                <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
                   <div className="flex-1">
                     <span className="inline-block text-orange-600 font-black text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-4 text-center w-full lg:text-left">FRETE GRÁTIS PARA TODO BRASIL</span>
                     
                     {/* Physical Book Choice Card */}
                     <div 
                       onClick={() => toggleBump(physicalBook.id)}
-                      className={`p-4 sm:p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group mb-6 sm:mb-8 ${
+                      className={`p-4 sm:p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group mb-5 sm:mb-8 ${
                         selectedBumps.includes(physicalBook.id) 
                         ? 'bg-orange-50 border-orange-500 shadow-lg shadow-orange-100' 
                         : 'bg-white border-slate-100 hover:border-slate-300'
                       }`}
                     >
-                      <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="flex items-start gap-3 sm:gap-4 flex-1">
                         <div className={`h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors ${
                           selectedBumps.includes(physicalBook.id) ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-400'
                         }`}>
                           {physicalBook.icon}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1">
-                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {physicalBook.oldPrice.toFixed(2).replace('.', ',')}</span>
-                            <p className="text-[10px] sm:text-xs font-black uppercase tracking-tighter text-orange-600">Por Apenas R$ {physicalBook.price.toFixed(2).replace('.', ',')}</p>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-1.5">
+                            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-tighter line-through text-slate-400">De R$ {physicalBook.oldPrice.toFixed(2).replace('.', ',')}</span>
+                            <p className="text-[11px] sm:text-sm font-black uppercase tracking-tighter text-orange-600 px-2 py-0.5 bg-orange-100/50 rounded-md">Por Apenas R$ {physicalBook.price.toFixed(2).replace('.', ',')}</p>
                           </div>
-                          <p className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight">{physicalBook.title}</p>
-                          <p className="text-[11px] sm:text-xs text-slate-500 leading-tight font-medium max-w-sm">{physicalBook.description}</p>
+                          <p className="text-sm sm:text-lg font-black text-slate-700 uppercase tracking-tighter mb-1 leading-tight break-words">{physicalBook.title}</p>
+                          <p className="text-[11px] sm:text-sm text-slate-500 leading-tight font-medium max-w-xl">{physicalBook.description}</p>
                         </div>
                       </div>
                       <div className={`h-6 w-6 shrink-0 rounded-md border-2 flex items-center justify-center transition-all ${
@@ -298,16 +469,16 @@ export default function ThankYou() {
                             <div 
                               key={bump.id}
                               onClick={() => toggleBump(bump.id)}
-                              className={`relative p-5 sm:p-8 rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-4 ${
+                              className={`relative p-5 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border-[3px] transition-all cursor-pointer group mb-8 mt-6 ${
                                 isSelected
-                                  ? 'bg-slate-900 border-orange-500 ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
+                                  ? 'bg-slate-900 border-orange-500 ring-2 sm:ring-4 ring-orange-500/20 shadow-2xl scale-[1.01]' 
                                   : 'bg-slate-800 border-slate-700 shadow-xl hover:border-orange-500/50'
                               }`}
                             >
                               {/* Floating Persuasion Badge */}
-                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-2 border-2 border-white/20">
-                                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap text-center">
-                                   COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200">ECONOMIZE R$ 458 SOMENTE AGORA</span>
+                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[95%] sm:w-auto whitespace-nowrap bg-orange-600 text-white py-2 px-3 sm:px-6 rounded-full shadow-2xl z-30 flex items-center justify-center gap-1 sm:gap-2 border-2 border-white/20">
+                                 <span className="text-[9px] sm:text-xs font-black uppercase tracking-widest whitespace-nowrap text-center">
+                                   COMBO TRANSFORMAÇÃO TOTAL 💎 <span className="text-orange-200 hidden xs:inline">ECONOMIZE R$ 458 HOJE</span>
                                  </span>
                               </div>
 
@@ -346,7 +517,7 @@ export default function ThankYou() {
                                   </div>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4">
+                                <div className="flex flex-col gap-4">
                                   <div className="flex flex-col">
                                     <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-widest line-through">De R$ 655,00</span>
                                     <p className="text-4xl sm:text-5xl font-black text-green-500 tracking-tighter leading-none">
@@ -354,13 +525,13 @@ export default function ThankYou() {
                                     </p>
                                   </div>
                                   
-                                  <div className={`h-14 flex-1 rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs sm:text-sm transition-all bg-orange-600 border-orange-600 text-white shadow-lg ${
+                                  <div className={`h-14 w-full rounded-xl border-2 flex items-center justify-center gap-2 font-black uppercase tracking-widest text-xs sm:text-sm transition-all bg-orange-600 border-orange-600 text-white shadow-lg ${
                                     isSelected 
-                                      ? 'shadow-orange-500/40 ring-4 ring-orange-500/20' 
+                                      ? 'shadow-orange-500/40 ring-2 sm:ring-4 ring-orange-500/20' 
                                       : 'hover:bg-orange-700 hover:border-orange-700'
                                   }`}>
-                                     {isSelected ? <CheckCircle2 size={22} /> : null}
-                                     <span>{isSelected ? 'SELECIONADO' : 'ADICIONAR AGORA'}</span>
+                                     {isSelected ? <CheckCircle2 size={20} /> : null}
+                                     <span>{isSelected ? 'SELECIONADO' : 'ADICIONAR AO PEDIDO'}</span>
                                   </div>
                                 </div>
                               </div>
@@ -416,16 +587,16 @@ export default function ThankYou() {
                     </div>
                   </div>
 
-                  <div className="lg:w-96 shrink-0 mt-8 lg:mt-0">
-                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 lg:sticky lg:top-24">
+                  <div className="xl:w-[400px] shrink-0 mt-8 xl:mt-0">
+                    <div className="bg-white p-5 sm:p-8 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 xl:sticky xl:top-24">
                       <div className="flex items-center justify-center gap-2 mb-4 bg-orange-50 py-2 rounded-xl border border-orange-100">
                         <ShieldCheck size={16} className="text-orange-600" />
-                        <span className="text-[10px] sm:text-xs font-black text-orange-700 uppercase tracking-widest">GARANTIA DE 7 DIAS ABSOLUTA</span>
+                        <span className="text-[9px] sm:text-xs font-black text-orange-700 uppercase tracking-widest">GARANTIA DE 7 DIAS ABSOLUTA</span>
                       </div>
                       <img 
                         src="https://i.postimg.cc/zvkhpzsN/capa-Paternidade-Proposito-By-Wagner-Ferraz.png" 
                         alt="Livro Físico" 
-                        className="w-full h-auto rounded-xl shadow-lg mb-6 sm:mb-8"
+                        className="w-full max-w-[180px] sm:max-w-[240px] mx-auto xl:max-w-none h-auto rounded-xl shadow-lg mb-6 sm:mb-8"
                         referrerPolicy="no-referrer"
                       />
                       
@@ -440,16 +611,16 @@ export default function ThankYou() {
                                initial={{ opacity: 0, x: -10 }}
                                animate={{ opacity: 1, x: 0 }}
                                exit={{ opacity: 0, x: 10 }}
-                               className="flex justify-between items-center text-sm font-bold text-orange-600"
+                               className="flex justify-between items-center text-[13px] sm:text-sm font-bold text-orange-600"
                              >
-                                <span className="max-w-[200px] break-words line-clamp-1">+ {getShortTitle(b.title)}</span>
+                                <span className="max-w-[180px] sm:max-w-[200px] break-words line-clamp-1">+ {getShortTitle(b.title)}</span>
                                 <span className="shrink-0 ml-2">R$ {b.price.toFixed(2).replace('.', ',')}</span>
                              </motion.div>
                            ))}
                          </div>
                          {selectedBumps.length > 0 && <div className="h-px bg-slate-100 my-4"></div>}
-                         <div className="flex flex-col gap-1 py-1">
-                            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
+                         <div className="flex flex-col gap-1 py-1 text-center lg:text-left">
+                            <span className="text-[9px] sm:text-xs font-black uppercase tracking-widest text-slate-500">VALOR TOTAL SELECIONADO</span>
                             <motion.div 
                               key={totalPrice}
                               initial={{ scale: 1.1, color: "#16a34a" }}
@@ -464,13 +635,13 @@ export default function ThankYou() {
 
                       <button 
                         onClick={handleWhatsAppOrder}
-                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center group cursor-pointer"
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 sm:py-6 rounded-2xl transition-all shadow-xl shadow-orange-200 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center group cursor-pointer"
                       >
                         <div className="flex items-center gap-3 mb-1">
-                          <ShoppingBag size={24} className="group-hover:rotate-12 transition-transform" />
-                          <span className="text-xl sm:text-2xl uppercase tracking-tighter">GARANTIR MEU PEDIDO</span>
+                          <ShoppingBag size={20} className="sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
+                          <span className="text-lg sm:text-2xl uppercase tracking-tighter">GARANTIR MEU PEDIDO</span>
                         </div>
-                        <span className="text-xs sm:text-sm opacity-80 font-bold uppercase tracking-widest bg-orange-700/50 px-4 py-1 rounded-full">
+                        <span className="text-[10px] sm:text-sm opacity-80 font-bold uppercase tracking-widest bg-orange-700/50 px-3 py-1 rounded-full">
                           Total: R$ {totalPrice.toFixed(2).replace('.', ',')}
                         </span>
                       </button>

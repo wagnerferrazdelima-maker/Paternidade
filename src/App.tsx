@@ -226,7 +226,7 @@ function LandingPage() {
         <div className="container mx-auto px-6 max-w-7xl w-full h-full flex flex-col justify-center py-6 sm:py-12 lg:py-0">
           <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-12 lg:gap-20">
             {/* Copy Side */}
-            <div className="flex-1 text-center lg:text-left z-10 w-full">
+            <div className="flex-1 text-center lg:text-left z-10 w-full lg:max-w-2xl">
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -237,19 +237,19 @@ function LandingPage() {
                   <span>Acesso Gratuito e Instantâneo</span>
                 </div>
                 
-                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-3 sm:mb-8 text-slate-900">
+                <h1 className="text-[2.2rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tighter mb-4 sm:mb-8 text-slate-900 uppercase xl:leading-[0.9]">
                   CRIE <span className="text-orange-600">FILHOS FORTES</span> EM UM MUNDO SEM VALORES.
                 </h1>
 
                 {/* Mobile Book Image - Optimized size to fit in first fold */}
-                <div className="lg:hidden mb-4 transform scale-90">
-                  <div className="relative group max-w-[180px] mx-auto">
-                    <div className="absolute inset-0 bg-orange-600/10 rounded-lg blur-2xl"></div>
+                <div className="lg:hidden mb-6 transform hover:scale-105 transition-transform duration-500">
+                  <div className="relative group max-w-[200px] mx-auto">
+                    <div className="absolute inset-0 bg-orange-600/20 rounded-lg blur-3xl opacity-50"></div>
                     <div className="relative z-10 flex justify-center">
                       <img 
                         src="https://i.postimg.cc/zvkhpzsN/capa-Paternidade-Proposito-By-Wagner-Ferraz.png" 
                         alt="Capa do Livro Paternidade com Propósito" 
-                        className="rounded-r-lg shadow-xl h-auto w-auto max-h-[25vh] object-contain border-l-[4px] border-black"
+                        className="rounded-r-lg shadow-2xl h-auto w-auto max-h-[30dvh] object-contain border-l-[6px] border-black"
                         referrerPolicy="no-referrer"
                         loading="lazy"
                       />
@@ -257,8 +257,8 @@ function LandingPage() {
                   </div>
                 </div>
 
-                <p className="text-slate-500 text-xs sm:text-xl lg:text-2xl mb-4 sm:mb-12 leading-tight sm:leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  Descubra o <span className="text-slate-900 font-bold">Manual Prático de Paternidade com Propósito</span> e assuma de vez a liderança do seu lar.
+                <p className="text-slate-500 text-[14px] sm:text-xl lg:text-2xl mb-6 sm:mb-12 leading-snug sm:leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
+                  Descubra o <span className="text-slate-900 font-bold uppercase">Manual Prático de Paternidade com Propósito</span> e assuma de vez a liderança do seu lar.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center mb-4 lg:mb-0">
@@ -350,12 +350,12 @@ function LandingPage() {
       <section className="min-h-screen lg:h-screen snap-start flex items-center bg-black text-white relative overflow-hidden py-20 lg:py-0">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-orange-600/5 blur-3xl -z-0"></div>
         <div className="container mx-auto px-6 max-w-7xl relative z-10 w-full">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
-            <div className="lg:w-5/12 order-2 lg:order-1">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 xl:gap-32">
+            <div className="lg:w-1/2 xl:w-5/12 order-2 lg:order-1">
               <span className="inline-block text-orange-500 font-black text-xs uppercase tracking-[0.3em] mb-6">Autoridade e Vivência</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] tracking-tighter uppercase">Wagner <br/> <span className="text-orange-600">Ferraz</span></h2>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-10 leading-[0.95] tracking-tighter uppercase">Wagner <br/> <span className="text-orange-600">Ferraz</span></h2>
               
-              <div className="space-y-6 sm:space-y-8 text-slate-400 text-base sm:text-lg leading-relaxed">
+              <div className="space-y-6 sm:space-y-8 text-slate-400 text-base sm:text-lg lg:text-xl leading-relaxed">
                 <p className="border-l-4 border-orange-600 pl-6">
                   "Sou <span className="text-white font-bold">Pai de 3 filhos</span>, Sargento da PM e Pastor. Minha missão é transformar homens comuns em líderes inabaláveis dentro de seus lares."
                 </p>
@@ -404,8 +404,8 @@ function LandingPage() {
         <div className="container mx-auto px-6 max-w-7xl w-full">
           <div className="max-w-3xl mb-10 sm:mb-20">
             <span className="text-orange-600 font-black text-xs uppercase tracking-[0.3em] mb-4 block">Conteúdo Exclusivo</span>
-            <h2 className="text-4xl sm:text-5xl font-black mb-6 leading-none uppercase tracking-tighter">O QUE ESTÁ <br/> EM <span className="text-orange-600">JOGO?</span></h2>
-            <p className="text-slate-500 text-lg sm:text-xl">Este não é um simples livro digital. É um treinamento estratégico dividido em pilares fundamentais para a sobrevivência da sua família.</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 leading-none uppercase tracking-tighter">O QUE ESTÁ <br className="hidden sm:block"/> EM <span className="text-orange-600">JOGO?</span></h2>
+            <p className="text-slate-500 text-lg sm:text-xl lg:text-2xl">Este não é um simples livro digital. É um treinamento estratégico dividido em pilares fundamentais para a sobrevivência da sua família.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
@@ -474,7 +474,7 @@ function LandingPage() {
                   required
                   type="text" 
                   placeholder="NOME COMPLETO"
-                  className="w-full bg-slate-50 border-2 border-slate-100 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px]"
+                  className="w-full bg-slate-50 border-2 border-slate-100 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] text-base"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                 />
@@ -483,7 +483,7 @@ function LandingPage() {
                     required
                     type="email" 
                     placeholder="SEU MELHOR E-MAIL"
-                    className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] ${errors.email ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
+                    className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] text-base ${errors.email ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                   />
@@ -495,7 +495,7 @@ function LandingPage() {
                   required
                   type="tel" 
                   placeholder="WHATSAPP COM DDD (Ex: 11 98888-8888)"
-                  className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] ${errors.whatsapp ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
+                  className={`w-full bg-slate-50 border-2 px-6 sm:px-8 py-4 sm:py-5 rounded-2xl focus:bg-white outline-none transition-all font-bold placeholder:text-slate-300 placeholder:uppercase placeholder:text-[10px] text-base ${errors.whatsapp ? 'border-red-400 focus:border-red-500' : 'border-slate-100 focus:border-orange-500'}`}
                   value={formData.whatsapp}
                   onChange={(e) => setFormData({...formData, whatsapp: maskPhone(e.target.value)})}
                   maxLength={15}
