@@ -46,7 +46,7 @@ export default function ThankYou() {
   });
   const [vslProgress, setVslProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const vslDuration = 220; // seconds
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(() => {
     const saved = localStorage.getItem('vsl_elapsed_seconds');
@@ -107,6 +107,7 @@ export default function ThankYou() {
         events: {
           onReady: (event: any) => {
             event.target.setVolume(100);
+            event.target.unMute();
             // Video ready - not autoplaying to ensure sound works on first interaction
             if (elapsedSeconds >= vslDuration) {
               setShowDelayedContent(true);
@@ -153,23 +154,16 @@ export default function ThankYou() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  // Handle Play/Pause and Unmute
+  // Handle Play/Pause
   const handleVslInteraction = () => {
     if (!playerRef.current) return;
 
-    if (isMuted) {
-      playerRef.current.unMute();
-      setIsMuted(false);
+    if (isPlaying) {
+      playerRef.current.pauseVideo();
+      setIsPlaying(false);
+    } else {
       playerRef.current.playVideo();
       setIsPlaying(true);
-    } else {
-      if (isPlaying) {
-        playerRef.current.pauseVideo();
-        setIsPlaying(false);
-      } else {
-        playerRef.current.playVideo();
-        setIsPlaying(true);
-      }
     }
   };
 
@@ -353,8 +347,11 @@ export default function ThankYou() {
 
               <div id="vsl-player" className="absolute inset-0 w-full h-full pointer-events-none"></div>
 
-              {/* Fake Internal UI Controls (Retention Hacks) - Removed PDF and Volume as requested */}
-              <div className="absolute top-2 left-0 w-full z-40 pointer-events-none flex items-center justify-center px-4">
+              {/* Top Label - PDF GRATIS PARA PAIS in Orange/Black */}
+              <div className="absolute top-4 sm:top-8 left-0 w-full z-40 pointer-events-none flex items-center justify-center px-4">
+                <div className="bg-orange-600 text-black px-3 sm:px-6 py-1 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-base font-black uppercase tracking-widest shadow-2xl border-2 border-black/10">
+                  PDF GRÁTIS PARA PAIS
+                </div>
               </div>
 
               {/* Play/Pause/Mute Interaction Area */}
