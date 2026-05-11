@@ -41,7 +41,9 @@ export default function ThankYou() {
     }
   });
   const [viewerIndex, setViewerIndex] = useState(0);
-  const [showDelayedContent, setShowDelayedContent] = useState(false);
+  const [showDelayedContent, setShowDelayedContent] = useState(() => {
+    return localStorage.getItem('vsl_content_revealed') === 'true';
+  });
   const [vslProgress, setVslProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -52,9 +54,21 @@ export default function ThankYou() {
   // YouTube Player Ref
   const playerRef = useRef<any>(null);
 
-  // Clear previous progress once on mount to start from zero as requested
+  // Restore scroll position and save it on scroll
   useEffect(() => {
-    localStorage.removeItem('vsl_elapsed_seconds');
+    const savedScroll = localStorage.getItem('thank_you_scroll_pos');
+    if (savedScroll) {
+      setTimeout(() => {
+        window.scrollTo({ top: parseInt(savedScroll, 10), behavior: 'instant' });
+      }, 100);
+    }
+
+    const handleScroll = () => {
+      localStorage.setItem('thank_you_scroll_pos', window.scrollY.toString());
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Load YouTube API
@@ -121,6 +135,7 @@ export default function ThankYou() {
           // Progressive reveal check
           if (next >= vslDuration) {
             setShowDelayedContent(true);
+            localStorage.setItem('vsl_content_revealed', 'true');
           }
           
           return next;
@@ -166,11 +181,6 @@ export default function ThankYou() {
     
     setVslProgress(Math.min(simulatedProgress, 100));
   }, [elapsedSeconds]);
-
-  useEffect(() => {
-    // Garante que a página comece no topo ao carregar/atualizar
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     // Persiste as seleções sempre que mudarem
