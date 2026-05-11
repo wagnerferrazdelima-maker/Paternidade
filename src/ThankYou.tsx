@@ -41,12 +41,17 @@ export default function ThankYou() {
     }
   });
   const [viewerIndex, setViewerIndex] = useState(0);
-  const [showDelayedContent, setShowDelayedContent] = useState(false);
+  const [showDelayedContent, setShowDelayedContent] = useState(() => {
+    return localStorage.getItem('vsl_content_revealed') === 'true';
+  });
   const [vslProgress, setVslProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const vslDuration = 220; // seconds
-  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(() => {
+    const saved = localStorage.getItem('vsl_elapsed_seconds');
+    return saved ? parseFloat(saved) : 0;
+  });
   const viewerNumbers = [37, 23, 17, 45, 67];
 
   // YouTube Player Ref
