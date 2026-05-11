@@ -347,14 +347,16 @@ export default function ThankYou() {
               <div id="vsl-player" className="absolute inset-0 w-full h-full pointer-events-none"></div>
 
               {/* Fake Internal UI Controls (Retention Hacks) */}
-              <div className="absolute top-0 left-0 w-full p-4 sm:p-8 flex items-center justify-between z-40 pointer-events-none">
-                 <div className="bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></div>
-                    <span className="text-[8px] sm:text-[10px] font-black text-white/90 uppercase tracking-widest">LIVE</span>
+              <div className="absolute top-2 left-0 w-full z-40 pointer-events-none flex items-center justify-center px-4">
+                 <div className="flex items-center">
+                    <span className="text-[7px] sm:text-[10px] font-black text-orange-500 bg-black/90 px-4 py-1 rounded-full border border-orange-500/30 uppercase tracking-[0.2em] shadow-2xl shadow-black/50 whitespace-nowrap">
+                      PDF GRÁTIS PARA PAIS
+                    </span>
                  </div>
-                 <div className="flex items-center gap-2">
-                    <div className="h-6 w-6 sm:h-9 sm:w-9 bg-black/40 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/10">
-                       {isMuted ? <VolumeX size={12} className="text-white/80 sm:w-5 sm:h-5" /> : <Volume2 size={12} className="text-white/80 sm:w-5 sm:h-5" />}
+
+                 <div className="absolute top-0 right-2 sm:right-4 flex items-center gap-2">
+                    <div className="h-6 w-6 sm:h-8 sm:w-8 bg-black/40 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/5">
+                       {isMuted ? <VolumeX size={10} className="text-white/60 sm:w-4 sm:h-4" /> : <Volume2 size={10} className="text-white/60 sm:w-4 sm:h-4" />}
                     </div>
                  </div>
               </div>
