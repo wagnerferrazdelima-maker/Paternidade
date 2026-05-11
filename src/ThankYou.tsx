@@ -41,9 +41,7 @@ export default function ThankYou() {
     }
   });
   const [viewerIndex, setViewerIndex] = useState(0);
-  const [showDelayedContent, setShowDelayedContent] = useState(() => {
-    return localStorage.getItem('vsl_content_revealed') === 'true';
-  });
+  const [showDelayedContent, setShowDelayedContent] = useState(false);
   const [vslProgress, setVslProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
